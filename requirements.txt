@@ -1,0 +1,6 @@
+dash
+pandas
+gunicorn
+dash-bootstrap-components
+dash-ag-grid
+dash-bootstrap-templates
