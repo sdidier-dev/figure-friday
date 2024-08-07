@@ -2,10 +2,13 @@ import json
 
 import pandas as pd
 
-
 # def load_data():
 df = pd.read_csv(
     'assets/rural-investments.csv',
+    usecols=[
+        'State Name', 'Congressional District', 'County FIPS', 'County', 'Program Area', 'Program',
+        'NAICS Industry Sector', 'Investment Dollars', 'Number of Investments'
+    ],
     dtype={'Investment Dollars': int},
     converters={'County FIPS': lambda x: x.zfill(5)},
     thousands=","
@@ -37,5 +40,3 @@ for feat in geojsons['CD']['features']:
         cd = feat['properties']['CD']
     feat['id'] = f"{feat['properties']['STATE']}-{cd}"
     geoID.append(feat['id'])
-
-    # return df, geojsons

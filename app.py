@@ -19,7 +19,6 @@ from assets.data import df, geojsons
 dbc_css = "https://cdn.jsdelivr.net/gh/AnnMarieW/dash-bootstrap-templates/dbc.min.css"
 app = Dash(__name__, external_stylesheets=[dbc.themes.SOLAR, dbc_css, dbc.icons.FONT_AWESOME])
 server = app.server
-load_figure_template("solar")
 
 # Grid params
 columnDefs = [
@@ -31,7 +30,7 @@ columnDefs = [
     {'field': 'Program Area'},
     {'field': 'Program'},
     {'field': 'NAICS Industry Sector'},
-    {'field': 'Investment Dollars', 'headerName': 'Investment'},
+    {'field': 'Investment Dollars', 'headerName': 'Investments'},
     {'field': 'Number of Investments'},
 ]
 
@@ -62,7 +61,8 @@ app.layout = html.Div(
                     className='my-1'
                 ),
                 graph_invest_distrib,
-                html.Div("Range of map's colorscale (set a nice range with the help of the above distribution):", className='mt-1'),
+                html.Div("Range of map's colorscale (set a nice range with the help of the above distribution):",
+                         className='mt-1'),
                 dcc.RangeSlider(
                     id="rangeslider-color",
                     min=0,
@@ -75,9 +75,7 @@ app.layout = html.Div(
                 graph_map,
             ], className='d-flex flex-column w-50 p-2'),
             html.Div([
-                html.Div("Investments proportions by 'Program Area' > 'Program' > 'NAICS Industry Sector':",
-                         ),
-
+                html.Div("Investments proportions by 'Program Area' > 'Program' > 'NAICS Industry Sector':"),
                 graph_program_details
             ], className='d-flex flex-column w-50 p-2'),
         ], className='d-flex', style={'height': '60%'}),
@@ -87,7 +85,7 @@ app.layout = html.Div(
                 id="grid-data",
                 rowData=df.to_dict("records"),
                 columnDefs=columnDefs,
-                defaultColDef={'filter': True, 'flex': 1},
+                defaultColDef={'filter': True, 'flex': 1, "filterParams": {"buttons": ["reset"]}},
                 style={"height": None},
                 className="ag-theme-quartz-dark"
             ),

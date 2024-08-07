@@ -21,7 +21,6 @@ fig.add_icicle(
 )
 fig.update_layout(
     paper_bgcolor='rgba(0,0,0,0)',
-
     margin={"r": 0, "t": 30, "l": 0, "b": 0},
 )
 
@@ -70,26 +69,4 @@ def update_program_details(virtual_data):
         patched_fig['data'][0]['labels'] = data['labels']
         patched_fig['data'][0]['values'] = data['values']
         return patched_fig
-        # fig_program_details = go.Figure()
-        # fig_program_details.add_icicle(
-        #     ids=data['ids'],
-        #     labels=data['labels'],
-        #     parents=data['parents'],
-        #     values=data['values'],
-        #     root_color="lightgrey",
-        #     branchvalues='total',
-        #     # marker=dict(
-        #     #     colors=data['color'],
-        #     #     colorscale='RdBu',
-        #     #     cmid=average_score
-        #     # ),
-        #     # hovertemplate='<b>%{label} </b> <br> Sales: %{value}<br> Success rate: %{color:.2f}',
-        #     text=['cool'] * len(data['ids']),
-        #     texttemplate="<b>%{label}</b><br>"
-        #                  "Investments: %{value:$.4s} (%{percentRoot} of total)",
-        #     # 'Program Area', 'Program', 'NAICS Industry Sector'
-        #     # `currentPath`, `root`, `entry`, `percentRoot`, `percentEntry`, `percentParent`, `label` and `value`
-        # )
-        # pprint(fig_program_details['data'][0]['value'])
-        # return fig_program_details
     return no_update

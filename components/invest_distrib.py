@@ -16,21 +16,20 @@ from assets.data import df, geojsons
 
 load_figure_template("solar")
 
-fig_invest_distrib = go.Figure()
-fig_invest_distrib.add_histogram(
+fig = go.Figure()
+fig.add_histogram(
     xbins_start=0, nbinsx=50,
 )
-fig_invest_distrib.update_layout(
+fig.update_layout(
     title_text='Investment distribution',
     title_x=0.5,
     paper_bgcolor='rgba(0,0,0,0)',
-
     margin={'autoexpand': False, "r": 25, "t": 25, "l": 25, "b": 25},
 )
 
 graph_invest_distrib = dcc.Graph(
     id='graph-invest-distrib',
-    figure=fig_invest_distrib,
+    figure=fig,
     config=dict(responsive=True),
     # className='flex-fill',
     style={'height': '20%'}
@@ -45,6 +44,8 @@ def update_invest_distrib(processed_data):
     if processed_data:
         dff = pd.read_json(StringIO(processed_data), orient='split', dtype={'State FIPS': str, 'County FIPS': str})
         patched_fig = Patch()
-        patched_fig['data'][0]['x'] = dff['Investment Dollars']
+        # add [-1] to the list as a trick to solve a bug,
+        # the histogram seems to dislike when there is only one data point > 1M
+        patched_fig['data'][0]['x'] = [-1] + dff['Investment Dollars'].tolist()
         return patched_fig
     return no_update
