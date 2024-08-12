@@ -43,7 +43,7 @@ for page in page_registry.values():
         dbc.Button(
             page['name'],
             id={'type': 'nav-btn', 'index': page['path']},
-            href=page['path'],
+            href='/sdidier-dev/figure-friday' + page['path'],
             color="primary"
         ),
         dbc.Tooltip(page['title'], target={'type': 'nav-btn', 'index': page['path']}, className='border border-primary')
