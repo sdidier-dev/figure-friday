@@ -1,0 +1,24 @@
+#_pages_content {
+    height: 100%;
+}
+
+/* fix parcats fig text on hover */
+#graph-program-details text.nums {
+    font-family: inherit !important;
+    font-size: 13px !important;
+}
+
+/* Grid: classes to center headers and cells*/
+.center-aligned-header .ag-header-cell-label {
+    justify-content: center;
+}
+
+.center-aligned-cell {
+    text-align: center;
+}
+
+/* Grid: background-color of the Total row same as headers*/
+#grid-data .ag-row-pinned {
+    background-color: var(--ag-header-background-color);
+}
+

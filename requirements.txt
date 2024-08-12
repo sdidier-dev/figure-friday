@@ -4,3 +4,4 @@ gunicorn
 dash-bootstrap-components
 dash-ag-grid
 dash-bootstrap-templates
+prefixed
