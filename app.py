@@ -16,9 +16,7 @@ app = Dash(
     # url_base_pathname='/sdidier-dev/figure-friday/'  # for dev, to remove in prod
 )
 
-pprint(f"requests_pathname_prefix: {app.config['requests_pathname_prefix']}")
-pprint(f"routes_pathname_prefix: {app.config['routes_pathname_prefix']}")
-pprint(f"url_base_pathname: {app.config['url_base_pathname']}")
+server = app.server
 
 page_container.className = 'flex-fill'
 

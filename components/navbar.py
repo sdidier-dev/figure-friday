@@ -1,6 +1,8 @@
 from dash import html, Input, Output, callback, page_registry, ALL, ctx
 import dash_mantine_components as dmc
 
+from app import app
+
 
 def main_app_navbar():
     return html.Div([
@@ -10,7 +12,7 @@ def main_app_navbar():
                     dmc.NavLink(
                         id={'type': 'navlink', 'index': page['path']},
                         label=page['name'],
-                        href='/sdidier-dev/figure-friday' + page['path'],  # fixme: temp url fix
+                        href=app.config['url_base_pathname'] + page['path'],  # fixme: temp url fix
                         # description=page['title'],
                         color='var(--bs-primary)', variant="filled",
                         fw=500, noWrap=True,
