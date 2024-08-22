@@ -7,3 +7,4 @@ dash-bootstrap-templates
 prefixed
 dash-mantine-components
 dash-iconify
+python-dotenv

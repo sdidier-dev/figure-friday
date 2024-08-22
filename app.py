@@ -1,9 +1,6 @@
-from pprint import pprint
-
 from dash import Dash, html, page_container, dcc, _dash_renderer
 import dash_bootstrap_components as dbc
 import dash_mantine_components as dmc
-
 from components import *
 
 _dash_renderer._set_react_version("18.2.0")
