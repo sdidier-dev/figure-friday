@@ -6,6 +6,7 @@ import dash_ag_grid as dag
 import pandas as pd
 
 df = pd.read_csv(
+    # 'assets/rural-investment.csv', #for dev
     'https://raw.githubusercontent.com/plotly/Figure-Friday/main/2024/week-30/rural-investments.csv',
     usecols=[
         'State Name', 'Congressional District', 'County FIPS', 'County', 'Program Area', 'Program',
@@ -67,7 +68,7 @@ columnDefs = [
             {'field': 'NAICS Industry Sector'},
             {'field': 'Project Name'},
             {'field': 'Project Announced Description', 'maxWidth': 1000,
-             'tooltipField': 'Project Announced Description'},
+             'tooltipField': 'Project Announced Description', 'flex': 1},
         ]
     },
     {

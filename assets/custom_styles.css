@@ -1,5 +1,35 @@
+.text-linear-gradient {
+    background: linear-gradient(45deg, var(--bs-primary), var(--bs-secondary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+/* dmc.HoverCardTarget: fix width of container set to width: fit-content by default*/
+[id^='mantine-'][id$='-target'] {
+    width: 100% !important;
+}
+
+/* add a neon effect of navbar tooltips for dark mode*/
+[data-bs-theme="dark"] {
+    .mantine-HoverCard-dropdown {
+        box-shadow: 0 0 10px var(--bs-primary);
+        border-color: var(--bs-primary);
+    }
+
+    .mantine-HoverCard-arrow {
+        border-bottom-color: var(--bs-primary) !important;
+        border-left-color: var(--bs-primary) !important;
+    }
+}
+
 #_pages_content {
     height: 100%;
+    /*width: 100%;*/
+    /*display: flex !important;*/
+    /*align-items: stretch !important;*/
+    /*flex-direction: column !important;*/
+
 }
 
 /* fix parcats fig text on hover */
@@ -20,5 +50,7 @@
 /* Grid: background-color of the Total row same as headers*/
 #grid-data .ag-row-pinned {
     background-color: var(--ag-header-background-color);
+}
+
 }
 

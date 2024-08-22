@@ -5,3 +5,5 @@ dash-bootstrap-components
 dash-ag-grid
 dash-bootstrap-templates
 prefixed
+dash-mantine-components
+dash-iconify

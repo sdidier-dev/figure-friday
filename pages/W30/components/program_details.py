@@ -1,39 +1,22 @@
-import pandas as pd
-
 from dash import dcc, html, Input, Output, callback, no_update
 from dash_bootstrap_templates import ThemeChangerAIO, template_from_url
+import dash_mantine_components as dmc
 import plotly.graph_objects as go
-import dash_bootstrap_components as dbc
+import pandas as pd
 
-pd.set_option('display.max_rows', None)
-pd.set_option('display.max_columns', None)
-
-# Dash components
-program_details_controls = html.Div([
-    html.Div('Display only top (0 = All):'),
-    html.Div([
-        dbc.Input(
-            id='input-program-details-top-prog-area', type="number", value=5, min=0, step=1,
-            style={'width': 70}, className='text-end'
-        ),
-        html.Div('Program Area', className='text-nowrap flex-fill'),
-        dbc.Input(
-            id='input-program-details-top-prog', type="number", value=5, min=0, step=1,
-            style={'width': 70}, className='text-end'),
-        html.Div('Program', className='text-nowrap flex-fill'),
-        dbc.Input(
-            id='input-program-details-top-NAICS', type="number", value=5, min=0, step=1,
-            style={'width': 70}, className='text-end'),
-        html.Div('NAICS Industry Secctor', className='text-nowrap flex-fill'),
-    ], className='d-inline-flex align-items-center'),
-    dbc.Checkbox(id="chk-program-details-hide-labels", label="Hide labels"),
-])
-
-program_details_graph = dcc.Graph(
-    id='graph-program-details',
-    config=dict(responsive=True),
-    className='flex-fill'
-)
+program_details_graph = html.Div([
+    dmc.LoadingOverlay(
+        id="graph-program-loading-overlay",
+        visible=True,
+        loaderProps={"type": "bars", "color": "var(--bs-primary)"},
+        overlayProps={"radius": "sm", "blur": 2},
+    ),
+    dcc.Graph(
+        id='graph-program-details',
+        responsive=True,
+        className='h-100'
+    )
+], className='h-100', style={'position': 'relative'})
 
 
 # internal function to have nicer labels for the parcats fig
@@ -57,11 +40,12 @@ def _add_line_breaks(label, max_length=25, max_lines=None):
 # Note: can't use a patch while modifying the theme, the fig must be fully regenerated
 @callback(
     Output("graph-program-details", "figure"),
+    Output("graph-program-loading-overlay", "visible"),
     Input("grid-data", "virtualRowData"),
     Input("input-program-details-top-prog-area", "value"),
     Input("input-program-details-top-prog", "value"),
     Input("input-program-details-top-NAICS", "value"),
-    Input("chk-program-details-hide-labels", "value"),
+    Input("chk-program-details-hide-labels", "checked"),
     Input(ThemeChangerAIO.ids.radio("theme"), "value"),
     Input("color-mode-switch", "value"),
     prevent_initial_call=True
@@ -111,5 +95,5 @@ def update_program_details(virtual_data, top_prog_area, top_prog, top_naics, hid
         margin={"r": 120, "t": 20, "l": 120, "b": 10},
         template=f"{template_from_url(theme)}{'' if switch_on else '_dark'}",
     )
-
-    return fig
+    # Note: False is to hide the loader when the fig is ready
+    return fig, False
