@@ -10,7 +10,6 @@ dbc_css = "https://cdn.jsdelivr.net/gh/AnnMarieW/dash-bootstrap-templates/dbc.mi
 app = Dash(
     use_pages=True,
     external_stylesheets=[dbc_css, dbc.themes.SOLAR],
-    # url_base_pathname='/sdidier-dev/figure-friday/'  # for dev, to remove in prod
 )
 
 server = app.server

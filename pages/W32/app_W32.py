@@ -5,7 +5,7 @@ from dash_iconify import DashIconify
 
 _dash_renderer._set_react_version("18.2.0")
 
-layout_W31 = html.Div('Coming soon!')
+layout_W32 = html.Div('Coming soon!')
 
 if __name__ == '__main__':
     # for local development
@@ -34,7 +34,7 @@ if __name__ == '__main__':
                     button_props=dict(outline=False, color="primary"),
                 ),
             ], className='d-inline-flex gap-2'),
-            layout_W31
+            layout_W32
         ], className='h-100 d-flex flex-column')
     )
 
@@ -56,17 +56,18 @@ else:
     # for the main Figure Friday app
     register_page(
         __name__,
-        path="/W31",
-        name="W31",  # used as label for the main app navlink
-        title="Stack Overflow’s Annual Developer Survey 2024",
-        # image="assets/W31.jpg",  # used by the tooltip for the main app navbar
-        description='In May 2024 over 65,000 developers responded to Stack Overflow annual survey about coding, '
-                    'working, AI and how they feel about all of those topics and more.'
-                    '\n\n**(Coming soon!)**',
-        data_source='*Data Source: [Stack Overflow Annual Developer Survey](https://survey.stackoverflow.co/), '
-                    '2024 dataset.*',
+        path="/W32",
+        name="W32",  # used as label for the main app navlink
+        title="Gender Pay Gap in Ireland",
+        # image="assets/W32.jpg",  # used by the tooltip for the main app navbar
+        description="Since 2022 in Ireland, companies with 250 or more employees have to report on their gender pay "
+                    "gap, which is defined as the difference of the average hourly wages between men and women."
+                    "\n\n**(Coming soon!)**",
+        data_source='*Data Source: As no official central portal to collect and make this information available exists '
+                    'yet, [Jennifer Keane](http://www.jenniferkeane.ie/) gathered data from 2022-2023 and share it on '
+                    'her [Irish Gender Pay Gap Portal](https://paygap.ie/downloads).*',
         disabled=True,
     )
     layout = html.Div([
-        layout_W31
+        layout_W32
     ], className='h-100 d-flex')

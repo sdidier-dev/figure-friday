@@ -17,5 +17,10 @@ else:
         __name__,
         path='/',
         name=DashIconify(icon="ic:outline-home", width=25),
-        title='Welcome to Plotly Figure Friday Project !'
+        title='Welcome to Plotly Figure Friday Project !',
+        # image="assets/home.jpg",  # used by the tooltip for the main app navbar
+        description=''
+                    '\n\n**(Under construction! 🛠️)**',
+        data_source=None,
+        disabled=False,
     )

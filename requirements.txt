@@ -8,3 +8,4 @@ prefixed
 dash-mantine-components
 dash-iconify
 python-dotenv
+statsmodels

@@ -175,7 +175,10 @@ if __name__ == '__main__':
 
     dbc_css = "https://cdn.jsdelivr.net/gh/AnnMarieW/dash-bootstrap-templates/dbc.min.css"
 
-    app = Dash(__name__, external_stylesheets=[dbc.themes.SOLAR, dbc.icons.BOOTSTRAP, dbc_css])
+    app = Dash(
+        external_stylesheets=[dbc.themes.SOLAR, dbc_css],
+        url_base_pathname='/',
+    )
 
     app.layout = dmc.MantineProvider(
         html.Div([
@@ -218,9 +221,13 @@ else:
         path="/W30",
         name="W30",  # used as label for the main app navlink
         title="Rural investments in the US in 2024",  # used by the tooltip for the main app navbar
+        description='The [Rural Development Agency](https://www.rd.usda.gov/about-rd) is part of the US Department of '
+                    'Agriculture and it provides loans, grants, and loan guarantees to bring prosperity and '
+                    'opportunity to rural areas.',
         image="assets/W30.jpg",  # used by the tooltip for the main app navbar
-        description='The Rural Development Agency is part of the Department of Agriculture and it provides loans, '
-                    'grants, and loan guarantees to bring prosperity and opportunity to rural areas.'
+        data_source='*Data Source: [USDA-RD website](https://www.rd.usda.gov/rural-data-gateway/rural-investments/data) '
+                    'filtered by fiscal year 2024.*',
+        disabled=False,
     )
     layout = html.Div([
         layout_W30

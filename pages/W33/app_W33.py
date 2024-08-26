@@ -5,7 +5,7 @@ from dash_iconify import DashIconify
 
 _dash_renderer._set_react_version("18.2.0")
 
-layout_W31 = html.Div('Coming soon!')
+layout_W33 = html.Div('Coming soon!')
 
 if __name__ == '__main__':
     # for local development
@@ -34,7 +34,7 @@ if __name__ == '__main__':
                     button_props=dict(outline=False, color="primary"),
                 ),
             ], className='d-inline-flex gap-2'),
-            layout_W31
+            layout_W33
         ], className='h-100 d-flex flex-column')
     )
 
@@ -56,17 +56,17 @@ else:
     # for the main Figure Friday app
     register_page(
         __name__,
-        path="/W31",
-        name="W31",  # used as label for the main app navlink
-        title="Stack Overflow’s Annual Developer Survey 2024",
-        # image="assets/W31.jpg",  # used by the tooltip for the main app navbar
-        description='In May 2024 over 65,000 developers responded to Stack Overflow annual survey about coding, '
-                    'working, AI and how they feel about all of those topics and more.'
+        path="/W33",
+        name="W33",  # used as label for the main app navlink
+        title="US Presidential Election Results by State from 1976 to 2020",
+        # image="assets/W33.jpg",  # used by the tooltip for the main app navbar
+        description='Self explanatory 😎'
                     '\n\n**(Coming soon!)**',
-        data_source='*Data Source: [Stack Overflow Annual Developer Survey](https://survey.stackoverflow.co/), '
-                    '2024 dataset.*',
+        data_source='*Data Source: '
+                    '[US Elections Dataset](https://www.kaggle.com/datasets/tunguz/us-elections-dataset/data), '
+                    'provided by Bojan Tunguz.*',
         disabled=True,
     )
     layout = html.Div([
-        layout_W31
+        layout_W33
     ], className='h-100 d-flex')
