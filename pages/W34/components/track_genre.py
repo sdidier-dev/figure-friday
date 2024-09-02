@@ -9,12 +9,12 @@ import pandas as pd
 from dash_iconify import DashIconify
 
 df = pd.read_csv(
-    r'E:\Python\Projects\figure-friday\figure-friday\pages\W34\assets\spotify_dataset.csv',  # for dev
-    # 'https://github.com/plotly/Figure-Friday/blob/main/2024/week-34/dataset.csv',
+    # r'E:\Python\Projects\figure-friday\figure-friday\pages\W34\assets\spotify_dataset.csv',  # for dev
+    # 'https://raw.githubusercontent.com/plotly/Figure-Friday/main/2024/week-34/dataset.csv',
 )
 
-num_features = ['popularity', 'danceability', 'energy', 'speechiness', 'acousticness', 'instrumentalness', 'liveness',
-                'valence', 'duration_ms', 'loudness', 'tempo']
+num_features = ['acousticness', 'danceability', 'duration_ms', 'energy', 'instrumentalness', 'liveness', 'loudness',
+                'popularity', 'speechiness', 'tempo', 'valence']
 
 genre_graph_controls = html.Div([
     html.Label("Select Feature"),
