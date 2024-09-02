@@ -12,14 +12,14 @@ from pages.W30.components import *
 _dash_renderer._set_react_version("18.2.0")
 
 layout_W30 = html.Div([
-    # Controls
+    # Drawer
     html.Div([
         html.Div([
             html.Div('Controls', className='fs-4 fw-bolder text-center p-2'),
             map_controls,
             program_details_controls
         ], className='d-flex flex-column h-100 border-end border-secondary mb-2 p-2'),
-    ], id='controls-drawer', className='d-flex justify-content-end', style={'transition': 'width 1s', 'width': 330}),
+    ], id='controls-drawer', className='d-flex justify-content-end h-100', style={'transition': 'width 1s', 'width': 330}),
 
     # Controls collapse button
     html.Div([
@@ -55,8 +55,7 @@ layout_W30 = html.Div([
         html.Div([
             # Map
             dbc.Card([
-                dbc.CardHeader("Investments by geographic areas", className='fs-5 text-body text-center',
-                               id='graph-card-header'),
+                dbc.CardHeader(id='graph-card-header', className='fs-5 text-body text-center'),
                 dbc.CardBody(map_graph, className='p-2'),
             ], className='flex-fill', style={'min-width': 700, 'min-height': 400}),
             # Programs
@@ -68,6 +67,7 @@ layout_W30 = html.Div([
 
         dcc.Store(id='store-processed-geo-data'),
     ], className='flex-fill d-flex flex-column gap-2 p-2')
+
 ], className='flex-fill d-flex')
 
 

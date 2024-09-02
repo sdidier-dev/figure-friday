@@ -47,7 +47,7 @@ def _add_line_breaks(label, max_length=25, max_lines=None):
     Input("input-program-details-top-NAICS", "value"),
     Input("chk-program-details-hide-labels", "checked"),
     Input(ThemeChangerAIO.ids.radio("theme"), "value"),
-    Input("color-mode-switch", "value"),
+    Input("color-mode-switch", "checked"),
     prevent_initial_call=True
 )
 def update_program_details(virtual_data, top_prog_area, top_prog, top_naics, hide_labels, theme, switch_on):

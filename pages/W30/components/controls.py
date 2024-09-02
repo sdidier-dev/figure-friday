@@ -88,7 +88,7 @@ def update_map_color_range(processed_data, area_type):
     Output("graph-invest-distrib-loading-overlay", "visible"),
     Input("store-processed-geo-data", "data"),
     Input(ThemeChangerAIO.ids.radio("theme"), "value"),
-    Input("color-mode-switch", "value"),
+    Input("color-mode-switch", "checked"),
     State("radio-map-area-type", "value")
 )
 def update_invest_distrib(processed_data, theme, switch_on, area_type):

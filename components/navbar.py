@@ -26,7 +26,7 @@ def main_app_navbar():
                 dmc.Image(radius="md", src=page['image']),
                 dcc.Markdown(page.get('data_source', None), className='pt-2'),
             ], bg='var(--bs-body-bg)', w=600),
-        ], withArrow=True, position="right", shadow="md", openDelay=500,
+        ], withArrow=True, position="right", shadow="md", openDelay=500, zIndex=500,
             transitionProps={'duration': 300, 'transition': 'scale-x'})
         for page in page_registry.values()
         # Note: add class z-3 and background so that the controls drawer is behind the navbar when collapsed

@@ -48,7 +48,7 @@ clientside_callback(
     Input("rangeslider-color", "value"),
     Input("store-processed-geo-data", "data"),
     Input(ThemeChangerAIO.ids.radio("theme"), "value"),
-    Input("color-mode-switch", "value"),
+    Input("color-mode-switch", "checked"),
     State("radio-map-area-type", "value")
 )
 def update_map_area(slider_range, processed_data, theme, switch_on, area_type):
