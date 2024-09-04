@@ -1,14 +1,11 @@
-from io import StringIO
-from pprint import pprint
-
-import numpy as np
-from dash import dcc, html, Input, Output, callback, no_update
-from dash_bootstrap_templates import ThemeChangerAIO, template_from_url, load_figure_template
+from dash_bootstrap_templates import ThemeChangerAIO, template_from_url
+from dash import dcc, html, Input, Output, callback
 import dash_mantine_components as dmc
-import plotly.graph_objects as go
-import pandas as pd
-import plotly.express as px
 from dash_iconify import DashIconify
+import plotly.graph_objects as go
+import plotly.express as px
+import numpy as np
+import pandas as pd
 
 df = pd.read_csv(
     # r'E:\Python\Projects\figure-friday\figure-friday\pages\W34\assets\spotify_dataset.csv',  # for dev
@@ -19,23 +16,30 @@ num_features = ['acousticness', 'danceability', 'duration_ms', 'energy', 'instru
                 'popularity', 'speechiness', 'tempo', 'valence']
 
 heatmap_corr_graph = html.Div([
-    dmc.Checkbox(
-        id="heatmap-corr-chk",
-        color='var(--bs-primary)',
-        label="Show upper half matrix",
-        labelPosition='left',
-        styles={'label': {"font-size": 16}},
-    ),
+    html.Div([
+        dmc.ActionIcon(
+            DashIconify(icon='clarity:info-line', width=25),
+            id="features-description-btn2",
+            variant="transparent", color='var(--bs-primary)',
+        ),
+        dmc.Checkbox(
+            id="heatmap-corr-chk",
+            color='var(--bs-primary)',
+            label="Show upper half matrix",
+            labelPosition='left',
+            styles={'label': {"font-size": 16}},
+        ),
+    ], className='d-flex align-items-center gap-2'),
     dcc.Graph(
         id='heatmap-corr-graph',
         responsive=True,
-        style={'min-width': 700, 'min-height': 300},
+        style={'min-width': 500, 'min-height': 300},
         className='h-100 flex-fill'
     )
 ], className='h-100 flex-fill d-flex flex-column gap-2')
 
 detail_corr_graph = html.Div([
-    html.Label("👈 Click on a value of the heatmap to see the details of the features pair correlation",
+    html.Label("↙️ Click on a value of the heatmap to see the details of the features pair correlation",
                className='ms-3'),
     html.Div([
         dmc.LoadingOverlay(
