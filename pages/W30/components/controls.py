@@ -74,12 +74,12 @@ program_details_controls = html.Div([
     State("radio-map-area-type", "value"),
 )
 def update_map_color_range(processed_data, area_type):
-    if processed_data:
-        dff = pd.read_json(StringIO(processed_data), orient='split', dtype={'State FIPS': str, 'County FIPS': str})
-        slider_max = dff['Investment Dollars'].max() / 10 ** 6
-        max_val = 8 if area_type == 'county' else 70 if area_type == 'CD' else slider_max
-        return slider_max, [0, max_val]
-    return no_update
+    if not processed_data:
+        return no_update, no_update
+    dff = pd.read_json(StringIO(processed_data), orient='split', dtype={'State FIPS': str, 'County FIPS': str})
+    slider_max = dff['Investment Dollars'].max() / 10 ** 6
+    max_val = 8 if area_type == 'county' else 70 if area_type == 'CD' else slider_max
+    return slider_max, [0, max_val]
 
 
 # Note: can't use a patch while modifying the theme, the fig must be fully regenerated
@@ -93,7 +93,7 @@ def update_map_color_range(processed_data, area_type):
 )
 def update_invest_distrib(processed_data, theme, switch_on, area_type):
     if not processed_data:
-        return no_update
+        return no_update, no_update
 
     dff = pd.read_json(StringIO(processed_data), orient='split', dtype={'State FIPS': str, 'County FIPS': str})
     fig = go.Figure()

@@ -53,7 +53,7 @@ clientside_callback(
 )
 def update_map_area(slider_range, processed_data, theme, switch_on, area_type):
     if not processed_data:
-        return no_update
+        return no_update, no_update
 
     dff = pd.read_json(
         StringIO(processed_data), orient='split',

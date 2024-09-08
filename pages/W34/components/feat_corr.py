@@ -60,7 +60,6 @@ detail_corr_graph = html.Div([
 
 # makes the loader visible when reloading data
 @callback(
-
     Output("detail-corr-graph-loading-overlay", "visible", allow_duplicate=True),
     Input('heatmap-corr-graph', 'clickData'),
     Input(ThemeChangerAIO.ids.radio("theme"), "value"),
@@ -122,7 +121,7 @@ def update_heatmap_corr(show_upper_half, theme, switch_on):
     Input(ThemeChangerAIO.ids.radio("theme"), "value"),
     Input("color-mode-switch", "checked")
 )
-def display_click_data(click_data, theme, switch_on):
+def update_detail_corr(click_data, theme, switch_on):
     x = click_data['points'][0]['x'] if click_data else 'energy'
     y = click_data['points'][0]['y'] if click_data else 'loudness'
 

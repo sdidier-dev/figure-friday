@@ -19,7 +19,8 @@ layout_W30 = html.Div([
             map_controls,
             program_details_controls
         ], className='d-flex flex-column h-100 border-end border-secondary mb-2 p-2'),
-    ], id='controls-drawer', className='d-flex justify-content-end h-100', style={'transition': 'width 1s', 'width': 330}),
+    ], id='controls-drawer', className='d-flex justify-content-end h-100',
+        style={'transition': 'width 1s', 'width': 330}),
 
     # Controls collapse button
     html.Div([
@@ -48,7 +49,7 @@ layout_W30 = html.Div([
         # Grid
         html.Div([
             html.Div("The grid can be used to filter the data of the graphs"),
-            aggrig_grid
+            rural_inv_grid
         ], className='h-50 d-flex flex-column dbc dbc-ag-grid'),
 
         # Graphs
@@ -91,50 +92,51 @@ def collapse_controls(n_clicks):
     State("tldr-overall-div", "children"),
 )
 def update_tldr_text(virtual_data, tldr_overall_children):
-    if virtual_data:
-        dff = pd.DataFrame(virtual_data)
+    if not virtual_data:
+        return no_update, no_update
 
-        # Overall tldr, created only at init
-        if not tldr_overall_children:
-            tldr_overall = {
-                'total': f"${Float(dff['Investment Dollars'].sum()):.2h}",
-                'total_nb': f"{dff['Number of Investments'].sum():,}",
-                'min': f"${Float(dff['Investment Dollars'].min()):.2h}",
-                'mean': f"${Float(dff['Investment Dollars'].sum() // dff['Number of Investments'].sum()):.2h}",
-                'max': f"${Float(dff['Investment Dollars'].max()):.2h}",
-            }
-            tldr_overall_children = [
-                html.Div([
-                    html.Span(tldr_overall['total'], className='text-primary fw-bold'), ' in ',
-                    html.Span(tldr_overall['total_nb'], className='text-primary fw-bold'), ' investments',
-                ], className='fs-5'),
-                '(min ', html.Span(tldr_overall['min'], className='text-primary fw-bold'), ' | mean ',
-                html.Span(tldr_overall['mean'], className='text-primary fw-bold'), ' | max ',
-                html.Span(tldr_overall['max'], className='text-primary fw-bold'), ')'
-            ]
-        else:
-            tldr_overall_children = no_update
+    dff = pd.DataFrame(virtual_data)
 
-        # Filtered tldr
-        tldr_filtered = {
+    # Overall tldr, created only at init
+    if not tldr_overall_children:
+        tldr_overall = {
             'total': f"${Float(dff['Investment Dollars'].sum()):.2h}",
             'total_nb': f"{dff['Number of Investments'].sum():,}",
             'min': f"${Float(dff['Investment Dollars'].min()):.2h}",
             'mean': f"${Float(dff['Investment Dollars'].sum() // dff['Number of Investments'].sum()):.2h}",
             'max': f"${Float(dff['Investment Dollars'].max()):.2h}",
         }
-        tldr_filtered_children = [
+        tldr_overall_children = [
             html.Div([
-                html.Span(tldr_filtered['total'], className='text-primary fw-bold'), ' in ',
-                html.Span(tldr_filtered['total_nb'], className='text-primary fw-bold'), ' investments',
+                html.Span(tldr_overall['total'], className='text-primary fw-bold'), ' in ',
+                html.Span(tldr_overall['total_nb'], className='text-primary fw-bold'), ' investments',
             ], className='fs-5'),
-            '(min ', html.Span(tldr_filtered['min'], className='text-primary fw-bold'), ' | mean ',
-            html.Span(tldr_filtered['mean'], className='text-primary fw-bold'), ' | max ',
-            html.Span(tldr_filtered['max'], className='text-primary fw-bold'), ')'
+            '(min ', html.Span(tldr_overall['min'], className='text-primary fw-bold'), ' | mean ',
+            html.Span(tldr_overall['mean'], className='text-primary fw-bold'), ' | max ',
+            html.Span(tldr_overall['max'], className='text-primary fw-bold'), ')'
         ]
+    else:
+        tldr_overall_children = no_update
 
-        return tldr_overall_children, tldr_filtered_children
-    return no_update
+    # Filtered tldr
+    tldr_filtered = {
+        'total': f"${Float(dff['Investment Dollars'].sum()):.2h}",
+        'total_nb': f"{dff['Number of Investments'].sum():,}",
+        'min': f"${Float(dff['Investment Dollars'].min()):.2h}",
+        'mean': f"${Float(dff['Investment Dollars'].sum() // dff['Number of Investments'].sum()):.2h}",
+        'max': f"${Float(dff['Investment Dollars'].max()):.2h}",
+    }
+    tldr_filtered_children = [
+        html.Div([
+            html.Span(tldr_filtered['total'], className='text-primary fw-bold'), ' in ',
+            html.Span(tldr_filtered['total_nb'], className='text-primary fw-bold'), ' investments',
+        ], className='fs-5'),
+        '(min ', html.Span(tldr_filtered['min'], className='text-primary fw-bold'), ' | mean ',
+        html.Span(tldr_filtered['mean'], className='text-primary fw-bold'), ' | max ',
+        html.Span(tldr_filtered['max'], className='text-primary fw-bold'), ')'
+    ]
+
+    return tldr_overall_children, tldr_filtered_children
 
 
 @callback(
@@ -152,21 +154,22 @@ def update_graph_title(area_type):
     Input("radio-map-area-type", "value"),
 )
 def store_processed_filtered_geo_data(virtual_data, area_type):
-    if virtual_data:
-        dff = pd.DataFrame(virtual_data)
-        # groupby depending on area type
-        if area_type == 'state':
-            group_by_cols = ['state_GEOID', 'State Name']
-        elif area_type == 'CD':
-            group_by_cols = ['CD_GEOID', 'State Name', 'Congressional District']
-        else:
-            group_by_cols = ['county_GEOID', 'State Name', 'County']
+    if not virtual_data:
+        return no_update
 
-        dff = dff[[*group_by_cols, 'Investment Dollars', 'Number of Investments']].groupby(
-            group_by_cols).sum().reset_index()
+    dff = pd.DataFrame(virtual_data)
+    # groupby depending on area type
+    if area_type == 'state':
+        group_by_cols = ['state_GEOID', 'State Name']
+    elif area_type == 'CD':
+        group_by_cols = ['CD_GEOID', 'State Name', 'Congressional District']
+    else:
+        group_by_cols = ['county_GEOID', 'State Name', 'County']
 
-        return dff.to_json(orient='split')
-    return no_update
+    dff = dff[[*group_by_cols, 'Investment Dollars', 'Number of Investments']].groupby(
+        group_by_cols).sum().reset_index()
+
+    return dff.to_json(orient='split')
 
 
 if __name__ == '__main__':

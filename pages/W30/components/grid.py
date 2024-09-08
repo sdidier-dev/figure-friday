@@ -98,7 +98,7 @@ dashGridOptions = {
 }
 
 # Dash component
-aggrig_grid = dag.AgGrid(
+rural_inv_grid = dag.AgGrid(
     id="grid-data",
     rowData=df.to_dict("records"),
     columnDefs=columnDefs,
@@ -115,17 +115,17 @@ aggrig_grid = dag.AgGrid(
     Input("grid-data", "virtualRowData"),
 )
 def row_pinning_bottom(virtual_data):
-    if not virtual_data:
-        return no_update
-    dff = pd.DataFrame(virtual_data, columns=['Investment Dollars', 'Number of Investments'])
+    if virtual_data:
+        dff = pd.DataFrame(virtual_data, columns=['Investment Dollars', 'Number of Investments'])
 
-    totals = dff[['Investment Dollars', 'Number of Investments']].sum()
+        totals = dff[['Investment Dollars', 'Number of Investments']].sum()
 
-    totals_formatted = {
-        "Investment Dollars": totals['Investment Dollars'],
-        "Number of Investments": totals['Number of Investments'],
-    }
+        totals_formatted = {
+            "Investment Dollars": totals['Investment Dollars'],
+            "Number of Investments": totals['Number of Investments'],
+        }
 
-    grid_option_patch = Patch()
-    grid_option_patch["pinnedBottomRowData"] = [{"State Name": "Total", **totals_formatted}]
-    return grid_option_patch
+        grid_option_patch = Patch()
+        grid_option_patch["pinnedBottomRowData"] = [{"State Name": "Total", **totals_formatted}]
+        return grid_option_patch
+    return no_update
