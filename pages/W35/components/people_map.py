@@ -6,6 +6,7 @@ import pandas as pd
 
 dff_splits = [0, 100000, 1000000, 10000000, 100000000]
 
+
 # internal function to wrap 'extract' text for hover
 def _add_line_breaks(text, max_length=50):
     if not isinstance(text, str):
@@ -29,6 +30,7 @@ people_map_graph = html.Div([
     dcc.Graph(
         id='people-map-graph',
         responsive=True,
+        config={'displayModeBar': False},
         style={'min-width': 500, 'min-height': 300},
         className='h-100 flex-fill'
     )

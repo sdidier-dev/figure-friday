@@ -1,0 +1,698 @@
+{
+  "Kabul, Afghanistan": {
+    "lat": 34.5260109,
+    "lon": 69.1776838
+  },
+  "Tirana, Albania": {
+    "lat": 41.3281482,
+    "lon": 19.8184435
+  },
+  "Algiers, Algeria": {
+    "lat": 36.7729309,
+    "lon": 3.0588291
+  },
+  "Luanda, Angola": {
+    "lat": -8.8272699,
+    "lon": 13.2439512
+  },
+  "Buenos Aires, Argentina": {
+    "lat": -34.6073387,
+    "lon": -58.4432852
+  },
+  "Yerevan, Armenia": {
+    "lat": 40.1777112,
+    "lon": 44.5126233
+  },
+  "Sydney, Australia": {
+    "lat": -33.8698439,
+    "lon": 151.2082848
+  },
+  "Canberra, Australia": {
+    "lat": -35.2975906,
+    "lon": 149.1012676
+  },
+  "Baku, Azerbaijan": {
+    "lat": 40.3755885,
+    "lon": 49.8328009
+  },
+  "Manama, Bahrain": {
+    "lat": 26.2235041,
+    "lon": 50.5822436
+  },
+  "Dhaka, Bangladesh": {
+    "lat": 23.7644025,
+    "lon": 90.389015
+  },
+  "Minsk, Belarus": {
+    "lat": 53.9024716,
+    "lon": 27.5618225
+  },
+  "Brussels, Belgium": {
+    "lat": 50.8465573,
+    "lon": 4.351697
+  },
+  "Cotonou, Benin": {
+    "lat": 6.3676953,
+    "lon": 2.4252507
+  },
+  "Thimphu, Bhutan": {
+    "lat": 27.4713546,
+    "lon": 89.6336729
+  },
+  "La Paz, Bolivia": {
+    "lat": -16.4955455,
+    "lon": -68.1336229
+  },
+  "Gaborone, Botswana": {
+    "lat": -24.6581357,
+    "lon": 25.9088474
+  },
+  "Bras\u00edlia, Brazil": {
+    "lat": -15.7934036,
+    "lon": -47.8823172
+  },
+  "Sofia, Bulgaria": {
+    "lat": 42.6977028,
+    "lon": 23.3217359
+  },
+  "Ouagadougou, Burkina Faso": {
+    "lat": 12.3681873,
+    "lon": -1.5270944
+  },
+  "Bujumbura, Burundi": {
+    "lat": -3.3638125,
+    "lon": 29.3675028
+  },
+  "Phnom Penh, Cambodia": {
+    "lat": 11.568271,
+    "lon": 104.9224426
+  },
+  "Yaound\u00e9, Cameroon": {
+    "lat": 3.8689867,
+    "lon": 11.5213344
+  },
+  "Ottawa, Canada": {
+    "lat": 45.4208777,
+    "lon": -75.6901106
+  },
+  "Bangui, Central African Republic": {
+    "lat": 4.3635118,
+    "lon": 18.5835913
+  },
+  "N'Djam\u00e9na, Chad": {
+    "lat": 12.1191543,
+    "lon": 15.0502758
+  },
+  "Santiago, Chile": {
+    "lat": -33.4377756,
+    "lon": -70.6504502
+  },
+  "Hangzhou, China": {
+    "lat": 30.2489634,
+    "lon": 120.2052342
+  },
+  "Beijing, China": {
+    "lat": 39.9057136,
+    "lon": 116.3912972
+  },
+  "Bogot\u00e1, Colombia": {
+    "lat": 4.6533816,
+    "lon": -74.0836333
+  },
+  "Brazzaville, Republic of the Congo": {
+    "lat": -4.2694407,
+    "lon": 15.2712256
+  },
+  "San Jos\u00e9, Costa Rica": {
+    "lat": 9.9325427,
+    "lon": -84.0795782
+  },
+  "Abidjan, C\u00f4te d'Ivoire": {
+    "lat": 5.320357,
+    "lon": -4.016107
+  },
+  "Zagreb, Croatia": {
+    "lat": 45.8130967,
+    "lon": 15.9772795
+  },
+  "Havana, Cuba": {
+    "lat": 23.135305,
+    "lon": -82.3589631
+  },
+  "Nicosia, Cyprus": {
+    "lat": 35.1746503,
+    "lon": 33.3638783
+  },
+  "Prague, Czechia": {
+    "lat": 50.0874654,
+    "lon": 14.4212535
+  },
+  "Kinshasa, Democratic Republic of the Congo": {
+    "lat": -4.3217055,
+    "lon": 15.3125974
+  },
+  "Copenhagen, Denmark": {
+    "lat": 55.6867243,
+    "lon": 12.5700724
+  },
+  "Djibouti, Djibouti": {
+    "lat": 11.5936903,
+    "lon": 43.1472724
+  },
+  "Cairo, Egypt": {
+    "lat": 30.0443879,
+    "lon": 31.2357257
+  },
+  "San Salvador, El Salvador": {
+    "lat": 13.6989939,
+    "lon": -89.1914249
+  },
+  "Malabo, Equatorial Guinea": {
+    "lat": 3.741877,
+    "lon": 8.7740663
+  },
+  "Asmara, Eritrea": {
+    "lat": 15.3389667,
+    "lon": 38.9326763
+  },
+  "Addis Ababa, Ethiopia": {
+    "lat": 9.0358287,
+    "lon": 38.7524127
+  },
+  "Suva, Fiji": {
+    "lat": -18.1415884,
+    "lon": 178.4421662
+  },
+  "Paris, France": {
+    "lat": 48.8534951,
+    "lon": 2.3483915
+  },
+  "Libreville, Gabon": {
+    "lat": 0.4086518,
+    "lon": 9.4418849
+  },
+  "Tbilisi, Georgia": {
+    "lat": 41.6934591,
+    "lon": 44.8014495
+  },
+  "Berlin, Germany": {
+    "lat": 52.510885,
+    "lon": 13.3989367
+  },
+  "Accra, Ghana": {
+    "lat": 5.5571096,
+    "lon": -0.2012376
+  },
+  "Athens, Greece": {
+    "lat": 37.9755648,
+    "lon": 23.7348324
+  },
+  "Guatemala City, Guatemala": {
+    "lat": 14.6416142,
+    "lon": -90.5132836
+  },
+  "Conakry, Guinea": {
+    "lat": 9.5170602,
+    "lon": -13.6998434
+  },
+  "Bissau, Guinea-Bissau": {
+    "lat": 11.861324,
+    "lon": -15.583055
+  },
+  "Port-au-Prince, Haiti": {
+    "lat": 18.547327,
+    "lon": -72.3395928
+  },
+  "Tegucigalpa, Honduras": {
+    "lat": 14.1057433,
+    "lon": -87.2040052
+  },
+  "Budapest, Hungary": {
+    "lat": 47.4978789,
+    "lon": 19.0402383
+  },
+  "Delhi, India": {
+    "lat": 28.6273928,
+    "lon": 77.1716954
+  },
+  "Jakarta, Indonesia": {
+    "lat": -6.175247,
+    "lon": 106.8270488
+  },
+  "Tehran, Iran": {
+    "lat": 35.6892523,
+    "lon": 51.3896004
+  },
+  "Baghdad, Iraq": {
+    "lat": 33.3061701,
+    "lon": 44.3872213
+  },
+  "Dublin, Ireland": {
+    "lat": 53.3493795,
+    "lon": -6.2605593
+  },
+  "Jerusalem, Israel": {
+    "lat": 31.7788242,
+    "lon": 35.2257626
+  },
+  "Rome, Italy": {
+    "lat": 41.8933203,
+    "lon": 12.4829321
+  },
+  "Tokyo, Japan": {
+    "lat": 35.6821936,
+    "lon": 139.762221
+  },
+  "Amman, Jordan": {
+    "lat": 31.9515694,
+    "lon": 35.9239625
+  },
+  "Temirtau, Kazakhstan": {
+    "lat": 50.0587825,
+    "lon": 72.9535681
+  },
+  "Astana, Kazakhstan": {
+    "lat": 51.1282205,
+    "lon": 71.4306682
+  },
+  "Nairobi, Kenya": {
+    "lat": -1.2832533,
+    "lon": 36.8172449
+  },
+  "Kuwait City, Kuwait": {
+    "lat": 29.3796532,
+    "lon": 47.9734174
+  },
+  "Bishkek, Kyrgyzstan": {
+    "lat": 42.8777895,
+    "lon": 74.6066926
+  },
+  "Vientiane, Laos": {
+    "lat": 17.9640988,
+    "lon": 102.6133707
+  },
+  "Riga, Latvia": {
+    "lat": 56.9493977,
+    "lon": 24.1051846
+  },
+  "Monrovia, Liberia": {
+    "lat": 6.328034,
+    "lon": -10.797788
+  },
+  "Tripoli, Libya": {
+    "lat": 32.896672,
+    "lon": 13.1777923
+  },
+  "Vilnius, Lithuania": {
+    "lat": 54.6870458,
+    "lon": 25.2829111
+  },
+  "Luxembourg, Luxembourg": {
+    "lat": 49.6112768,
+    "lon": 6.129799
+  },
+  "Antananarivo, Madagascar": {
+    "lat": -18.9100122,
+    "lon": 47.5255809
+  },
+  "Lilongwe, Malawi": {
+    "lat": -13.9875107,
+    "lon": 33.768144
+  },
+  "Kuala Lumpur, Malaysia": {
+    "lat": 3.1516964,
+    "lon": 101.6942371
+  },
+  "Bamako, Mali": {
+    "lat": 12.649319,
+    "lon": -8.000337
+  },
+  "Valletta, Malta": {
+    "lat": 35.8989818,
+    "lon": 14.5136759
+  },
+  "Nouakchott, Mauritania": {
+    "lat": 18.0792379,
+    "lon": -15.9780071
+  },
+  "Port Louis, Mauritius": {
+    "lat": -20.1624522,
+    "lon": 57.5028044
+  },
+  "Mexico City, Mexico": {
+    "lat": 19.4326296,
+    "lon": -99.1331785
+  },
+  "Chisinau, Moldova": {
+    "lat": 47.0245117,
+    "lon": 28.8322923
+  },
+  "Ulaanbaatar, Mongolia": {
+    "lat": 47.9184676,
+    "lon": 106.9177016
+  },
+  "Podgorica, Montenegro": {
+    "lat": 42.4415238,
+    "lon": 19.2621081
+  },
+  "Rabat, Morocco": {
+    "lat": 34.02236,
+    "lon": -6.8340222
+  },
+  "Maputo, Mozambique": {
+    "lat": -25.966213,
+    "lon": 32.56745
+  },
+  "Windhoek, Namibia": {
+    "lat": -22.5776104,
+    "lon": 17.0772739
+  },
+  "Kathmandu, Nepal": {
+    "lat": 27.708317,
+    "lon": 85.3205817
+  },
+  "Amsterdam, Netherlands": {
+    "lat": 52.3730796,
+    "lon": 4.8924534
+  },
+  "Wellington, New Zealand": {
+    "lat": -41.2887953,
+    "lon": 174.7772114
+  },
+  "Managua, Nicaragua": {
+    "lat": 12.1544035,
+    "lon": -86.2737642
+  },
+  "Niamey, Niger": {
+    "lat": 13.524834,
+    "lon": 2.109823
+  },
+  "Abuja, Nigeria": {
+    "lat": 9.0643305,
+    "lon": 7.4892974
+  },
+  "Pyongyang, North Korea": {
+    "lat": 39.0167979,
+    "lon": 125.7473609
+  },
+  "Skopje, North Macedonia": {
+    "lat": 41.9961816,
+    "lon": 21.4319213
+  },
+  "Oslo, Norway": {
+    "lat": 59.9133301,
+    "lon": 10.7389701
+  },
+  "Muscat, Oman": {
+    "lat": 23.5882019,
+    "lon": 58.3829448
+  },
+  "Islamabad, Pakistan": {
+    "lat": 33.6938118,
+    "lon": 73.0651511
+  },
+  "Panama City, Panama": {
+    "lat": 8.9714493,
+    "lon": -79.5341802
+  },
+  "Asunci\u00f3n, Paraguay": {
+    "lat": -25.2800459,
+    "lon": -57.6343814
+  },
+  "Lima, Peru": {
+    "lat": -12.0621065,
+    "lon": -77.0365256
+  },
+  "Manila, Philippines": {
+    "lat": 14.5906346,
+    "lon": 120.9799964
+  },
+  "Warsaw, Poland": {
+    "lat": 52.2319581,
+    "lon": 21.0067249
+  },
+  "Lisbon, Portugal": {
+    "lat": 38.7077507,
+    "lon": -9.1365919
+  },
+  "Doha, Qatar": {
+    "lat": 25.2856329,
+    "lon": 51.5264162
+  },
+  "Bucharest, Romania": {
+    "lat": 44.4361414,
+    "lon": 26.1027202
+  },
+  "Moscow, Russia": {
+    "lat": 55.7505412,
+    "lon": 37.6174782
+  },
+  "Kigali, Rwanda": {
+    "lat": -1.950851,
+    "lon": 30.061507
+  },
+  "Apia, Samoa": {
+    "lat": -13.8344639,
+    "lon": -171.7649144
+  },
+  "San Marino, San Marino": {
+    "lat": 43.9458623,
+    "lon": 12.458306
+  },
+  "S\u00e3o Tom\u00e9, S\u00e3o Tom\u00e9 and Pr\u00edncipe": {
+    "lat": 0.3389242,
+    "lon": 6.7313031
+  },
+  "Riyadh, Saudi Arabia": {
+    "lat": 24.638916,
+    "lon": 46.7160104
+  },
+  "Dakar, Senegal": {
+    "lat": 14.693425,
+    "lon": -17.447938
+  },
+  "Belgrade, Serbia": {
+    "lat": 44.8178131,
+    "lon": 20.4568974
+  },
+  "Victoria, Seychelles": {
+    "lat": -4.6232085,
+    "lon": 55.452359
+  },
+  "Freetown, Sierra Leone": {
+    "lat": 8.479004,
+    "lon": -13.26795
+  },
+  "Singapore, Singapore": {
+    "lat": 1.2899175,
+    "lon": 103.8519072
+  },
+  "Bratislava, Slovakia": {
+    "lat": 48.1516988,
+    "lon": 17.1093063
+  },
+  "Ljubljana, Slovenia": {
+    "lat": 46.0500268,
+    "lon": 14.5069289
+  },
+  "Honiara, Solomon Islands": {
+    "lat": -9.4310769,
+    "lon": 159.9552552
+  },
+  "Mogadishu, Somalia": {
+    "lat": 2.0349312,
+    "lon": 45.3419183
+  },
+  "Pretoria, South Africa": {
+    "lat": -25.7459277,
+    "lon": 28.1879101
+  },
+  "Seoul, South Korea": {
+    "lat": 37.5666791,
+    "lon": 126.9782914
+  },
+  "Juba, South Sudan": {
+    "lat": 4.8459246,
+    "lon": 31.5959173
+  },
+  "Madrid, Spain": {
+    "lat": 40.4167047,
+    "lon": -3.7035825
+  },
+  "Colombo, Sri Lanka": {
+    "lat": 6.9388614,
+    "lon": 79.8542005
+  },
+  "Khartoum, Sudan": {
+    "lat": 15.5635972,
+    "lon": 32.5349123
+  },
+  "Paramaribo, Suriname": {
+    "lat": 5.8247628,
+    "lon": -55.1703941
+  },
+  "Stockholm, Sweden": {
+    "lat": 59.3251172,
+    "lon": 18.0710935
+  },
+  "Bern, Switzerland": {
+    "lat": 46.9484742,
+    "lon": 7.4521749
+  },
+  "Damascus, Syria": {
+    "lat": 33.5130695,
+    "lon": 36.3095814
+  },
+  "Taipei, Taiwan": {
+    "lat": 25.0375198,
+    "lon": 121.5636796
+  },
+  "Dushanbe, Tajikistan": {
+    "lat": 38.5762709,
+    "lon": 68.7863573
+  },
+  "Dar es Salaam, Tanzania": {
+    "lat": -6.8160837,
+    "lon": 39.2803583
+  },
+  "Bangkok, Thailand": {
+    "lat": 13.7524938,
+    "lon": 100.4935089
+  },
+  "Lom\u00e9, Togo": {
+    "lat": 6.130419,
+    "lon": 1.215829
+  },
+  "Nuku\u02bbalofa, Tonga": {
+    "lat": -21.1343401,
+    "lon": -175.201808
+  },
+  "Tunis, Tunisia": {
+    "lat": 36.8002068,
+    "lon": 10.1857757
+  },
+  "Ankara, Turkey": {
+    "lat": 39.9207759,
+    "lon": 32.8540497
+  },
+  "Ashgabat, Turkmenistan": {
+    "lat": 37.9404648,
+    "lon": 58.3823487
+  },
+  "Kampala, Uganda": {
+    "lat": 0.3177137,
+    "lon": 32.5813539
+  },
+  "Kyiv, Ukraine": {
+    "lat": 50.4500336,
+    "lon": 30.5241361
+  },
+  "Abu Dhabi, United Arab Emirates": {
+    "lat": 24.4538352,
+    "lon": 54.3774014
+  },
+  "London, United Kingdom": {
+    "lat": 51.5074456,
+    "lon": -0.1277653
+  },
+  "Washington, D.C., United States of America": {
+    "lat": 38.8950368,
+    "lon": -77.0365427
+  },
+  "Tashkent, Uzbekistan": {
+    "lat": 41.3123363,
+    "lon": 69.2787079
+  },
+  "Port Vila, Vanuatu": {
+    "lat": -17.7414972,
+    "lon": 168.3150163
+  },
+  "Vatican City, Vatican City": {
+    "lat": 41.9034912,
+    "lon": 12.4528349
+  },
+  "Caracas, Venezuela": {
+    "lat": 10.5060934,
+    "lon": -66.9146008
+  },
+  "Hanoi, Vietnam": {
+    "lat": 21.0283334,
+    "lon": 105.854041
+  },
+  "Sana'a, Yemen": {
+    "lat": 15.3538569,
+    "lon": 44.2058841
+  },
+  "Lusaka, Zambia": {
+    "lat": -15.4163395,
+    "lon": 28.2818414
+  },
+  "Harare, Zimbabwe": {
+    "lat": -17.831773,
+    "lon": 31.045686
+  },
+  "Leeds, United Kingdom": {
+    "lat": 53.7974185,
+    "lon": -1.5437941
+  },
+  "Exeter, United Kingdom": {
+    "lat": 50.7256138,
+    "lon": -3.5269209
+  },
+  "Edinburgh, United Kingdom": {
+    "lat": 55.9533456,
+    "lon": -3.1883749
+  },
+  "Los Angeles, United States of America": {
+    "lat": 34.0536909,
+    "lon": -118.242766
+  },
+  "Nanjing, China": {
+    "lat": 32.0438284,
+    "lon": 118.7788631
+  },
+  "Shanghai, China": {
+    "lat": 31.2323437,
+    "lon": 121.4691024
+  },
+  "Chennai, India": {
+    "lat": 13.0836939,
+    "lon": 80.270186
+  },
+  "Ahmedabad, India": {
+    "lat": 23.0215374,
+    "lon": 72.5800568
+  },
+  "Fairbanks, United States of America": {
+    "lat": 64.837845,
+    "lon": -147.716675
+  },
+  "S\u00e3o Paulo, Brazil": {
+    "lat": -23.5506507,
+    "lon": -46.6333824
+  },
+  "Cape Town, South Africa": {
+    "lat": -33.928992,
+    "lon": 18.417396
+  },
+  "Birmingham, United Kingdom": {
+    "lat": 52.4796992,
+    "lon": -1.9026911
+  },
+  "Cardiff, United Kingdom": {
+    "lat": 51.4816546,
+    "lon": -3.1791934
+  },
+  "Belfast, United Kingdom": {
+    "lat": 54.596391,
+    "lon": -5.9301829
+  },
+  "Reykjav\u00edk, Iceland": {
+    "lat": 64.145981,
+    "lon": -21.9422367
+  },
+  "Yakutsk, Russia": {
+    "lat": 62.0274078,
+    "lon": 129.7319787
+  }
+}
