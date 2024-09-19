@@ -35,8 +35,25 @@ def _get_level(val):
 
 pollution_map_graph = html.Div([
     html.Div([
-        dmc.Checkbox(id="pollution-map-markers-chk", label="Show Markers", checked=True, color='var(--bs-primary)'),
-        dmc.Checkbox(id="pollution-map-labels-chk", label="Show Labels", checked=True, color='var(--bs-primary)'),
+        'Options:',
+        dmc.Tooltip(
+            label="The Size of the Marker is proportional to the Pollution Value and the Color is linked to the "
+                  "Pollution Level Category",
+            position="bottom", withArrow=True,
+            children=dmc.Checkbox(
+                id="pollution-map-markers-chk",
+                label="Labels", checked=True, color='var(--bs-primary)')
+        ),
+        dmc.Tooltip(
+            label="The Labels show the Evolution of the Pollution Value compare to the Previous Year",
+            position="bottom", withArrow=True,
+            children=dmc.Checkbox(
+                id="pollution-map-labels-chk",
+                label="Labels", checked=True, color='var(--bs-primary)')
+        ),
+
+        # dmc.Checkbox(id="pollution-map-markers-chk", label="Show Markers", checked=True, color='var(--bs-primary)'),
+        # dmc.Checkbox(id="pollution-map-labels-chk", label="Show Labels", checked=True, color='var(--bs-primary)'),
     ], className='d-flex gap-4'),
     dcc.Graph(
         id='pollution-map-graph',

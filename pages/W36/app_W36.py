@@ -46,7 +46,7 @@ layout_W36 = html.Div([
             dbc.CardBody(components.pollution_top_bar_graph, className='p-2'),
         ], className='flex-fill', style={'min-width': 300, 'min-height': 400}),
     ], className='h-50 d-flex flex-wrap overflow-auto gap-2'),
-    html.Span('Select the Year for the Upper Views:', className='text-muted', style={'font-size': 14}),
+    html.Span('Select the Year for the Map and the Bar Plot Above:', className='text-muted', style={'font-size': 14}),
     dcc.Slider(
         id="year-pollution-slider",
         min=1850, max=2021, step=1, value=2021,

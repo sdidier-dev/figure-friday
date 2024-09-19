@@ -1,13 +1,12 @@
 import json
+import os
 
 import pandas as pd
 
-# todo: replace '.' to '..' when refactoring in component folder
-# assets_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '.', 'assets'))
-assets_dir = r'E:\Python\Projects\figure-friday\figure-friday\pages\W36\assets'
+assets_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '.', 'assets'))
 
 df = pd.read_csv(
-    # f'{assets_dir}/air-pollution.csv',
+    # f'{assets_dir}/air-pollution.csv', # for dev
     'https://raw.githubusercontent.com/plotly/Figure-Friday/main/2024/week-36/air-pollution.csv',
     index_col='Year'
 )

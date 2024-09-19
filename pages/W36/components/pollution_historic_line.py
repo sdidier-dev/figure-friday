@@ -1,9 +1,5 @@
-import json
-from pprint import pprint
-
-import numpy as np
 from dash_bootstrap_templates import ThemeChangerAIO, template_from_url
-from dash import dcc, html, Input, Output, callback, no_update, State, ctx
+from dash import dcc, html, Input, Output, callback, State, ctx
 import dash_mantine_components as dmc
 import plotly.graph_objects as go
 import pandas as pd
@@ -18,15 +14,15 @@ pollution_historic_line = html.Div([
         id='pollution-historic-line-multiSelect',
         data=df.columns,
         value=['Paris, France', 'Moscow, Russia'],
-        placeholder="Select the Cities (can also be selected by clicking on the upper views 👆)",
+        placeholder="Select the Cities (Tip: can also be selected by clicking on the map or the bar plot above 👆)",
         hidePickedOptions=True,
         searchable=True,
         nothingFoundMessage="Nothing Found!",
     ),
     html.Div([
-        'Show:',
+        'Options:',
         dmc.Tooltip(
-            label="Minima and Maxima Values though each Year",
+            label="Minima and Maxima Values between 1850 and 2021",
             position="bottom", withArrow=True,
             children=dmc.Checkbox(
                 id="pollution-historic-line-extremes-chk",
@@ -40,18 +36,18 @@ pollution_historic_line = html.Div([
                 label="Pollution Level Zones", checked=True, color='var(--bs-primary)')
         ),
         dmc.Tooltip(
-            label="Percentage in each Pollution Level of the Selected Cities Together",
+            label="Percentage of the Time between 1850 and 2021 in Each Zones of the Selected Cities Combined",
             position="bottom", withArrow=True,
             children=dmc.Checkbox(
                 id="pollution-historic-percent-levels-chk",
-                label="Percentages in each Level", checked=True, color='var(--bs-primary)')
+                label="Percentage of the Time in Each Zones", checked=True, color='var(--bs-primary)')
         ),
         dmc.Tooltip(
             label="All Cities Displayed in the Background",
             position="bottom", withArrow=True,
             children=dmc.Checkbox(
                 id="pollution-historic-line-shadows-chk",
-                label="Countries' Shadows", color='var(--bs-primary)')
+                label="All Countries' Shadows", color='var(--bs-primary)')
         ),
     ], className='d-flex align-items-center gap-4'),
 
@@ -59,7 +55,7 @@ pollution_historic_line = html.Div([
         id='pollution-historic-line-graph',
         responsive=True,
         config={'displayModeBar': False},
-        style={'min-width': 300, 'min-height': 300},
+        style={'min-width': 300, 'min-height': 400},
         className='h-100 flex-fill'
     )
 ], className='h-100 flex-fill d-flex flex-column gap-2')
@@ -204,7 +200,6 @@ def update_pollution_bar(selected_cities, show_extremes, show_levels, show_pence
     fig.update_layout(
         legend={'orientation': 'h', 'y': -0.05},
         xaxis_showgrid=False,
-
         yaxis_showgrid=False,
         yaxis_range=[0, range_max],
         yaxis_title_text='PM2.5 Concentration (µg/m³)',
