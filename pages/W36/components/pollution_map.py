@@ -38,7 +38,7 @@ pollution_map_graph = html.Div([
             position="bottom", withArrow=True,
             children=dmc.Checkbox(
                 id="pollution-map-markers-chk",
-                label="Labels", checked=True, color='var(--bs-primary)')
+                label="Markers", checked=True, color='var(--bs-primary)')
         ),
         dmc.Tooltip(
             label="The Labels show the Evolution of the Pollution Value compare to the Previous Year",
