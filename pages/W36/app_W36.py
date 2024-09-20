@@ -1,17 +1,10 @@
-import json
-import os
-from pprint import pprint
-
-import numpy as np
-import pandas as pd
 from dash import Dash, dcc, html, Input, Output, register_page, clientside_callback, _dash_renderer, callback
 import dash_bootstrap_components as dbc
 import dash_mantine_components as dmc
 from dash_iconify import DashIconify
-import plotly.graph_objects as go
 
 import pages.W36.components as components
-from config import pollution_levels
+from pages.W36.config import pollution_levels
 
 md_levels_info = [
     html.Div([
