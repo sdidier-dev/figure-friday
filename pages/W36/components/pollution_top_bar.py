@@ -1,13 +1,9 @@
-import json
-from pprint import pprint
-
 from dash_bootstrap_templates import ThemeChangerAIO, template_from_url
-from dash import dcc, html, Input, Output, callback, no_update, State
-import dash_mantine_components as dmc
+from dash import dcc, Input, Output, callback
 import plotly.graph_objects as go
 import pandas as pd
 
-from pages.W36.config import df_cities, pollution_levels
+from ..config import df_cities
 
 pollution_top_bar_graph = dcc.Graph(
     id='pollution-top-bar-graph',

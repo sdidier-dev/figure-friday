@@ -56,7 +56,7 @@ pollution_levels = {
                        'outdoor activities.'
     },
     'Hazardous': {
-        'min': 225.5, 'max': float('inf'), 'color': '#4C3940',
+        'min': 225.5, 'max': float('inf'), 'color': '#7F606C',
         'description': 'General public at high risk of experiencing strong irritations and adverse health effects. '
                        'Should avoid outdoor activities.'
     },

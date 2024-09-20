@@ -1,14 +1,10 @@
-import json
-from pprint import pprint
-
 import numpy as np
 from dash_bootstrap_templates import ThemeChangerAIO, template_from_url
-from dash import dcc, html, Input, Output, callback, no_update
+from dash import dcc, html, Input, Output, callback
 import dash_mantine_components as dmc
 import plotly.graph_objects as go
-import pandas as pd
 
-from pages.W36.config import df_cities, pollution_levels
+from ..config import df_cities, pollution_levels
 
 
 # internal function to wrap 'description' text for hover
@@ -17,11 +13,11 @@ def _add_line_breaks(text, max_length=50):
         return ''
     new_text, length = text.split()[0], len(text.split()[0])
     for word in text.split()[1:]:
-        if length + len(' ' + word) <= max_length:
-            new_text += ' ' + word
-            length += len(' ' + word)
+        if length + len(f' {word}') <= max_length:
+            new_text += f' {word}'
+            length += len(f' {word}')
         else:
-            new_text += '<br>' + word
+            new_text += f'<br>{word}'
             length = 0
     return new_text
 
@@ -51,9 +47,6 @@ pollution_map_graph = html.Div([
                 id="pollution-map-labels-chk",
                 label="Labels", checked=True, color='var(--bs-primary)')
         ),
-
-        # dmc.Checkbox(id="pollution-map-markers-chk", label="Show Markers", checked=True, color='var(--bs-primary)'),
-        # dmc.Checkbox(id="pollution-map-labels-chk", label="Show Labels", checked=True, color='var(--bs-primary)'),
     ], className='d-flex gap-4'),
     dcc.Graph(
         id='pollution-map-graph',
@@ -79,8 +72,8 @@ def update_pollution_map(year, show_labels, show_markers, theme, switch_on):
     df_cities['description'] = df_cities['level'].apply(
         lambda row: _add_line_breaks(pollution_levels[row]['description']))
     df_cities['color'] = df_cities['level'].apply(lambda row: pollution_levels[row]['color'])
-    df_cities['delta'] = (df_cities[year].to_numpy() - df_cities[year - 1].to_numpy()).round(
-        2) if year != 1850 else np.nan
+    df_cities['delta'] = (df_cities[year].to_numpy() - df_cities[year - 1].to_numpy()
+                          ).round(2) if year != 1850 else np.nan
 
     fig = go.Figure()
 
@@ -91,10 +84,8 @@ def update_pollution_map(year, show_labels, show_markers, theme, switch_on):
             fig.add_scattermap(
                 name=level,
                 lat=dff_cities['lat'], lon=dff_cities['lon'],
-                marker={
-                    'size': dff_cities[year].apply(lambda row: max(row // 1.5, 7)),
-                    'color': level_param['color'],
-                },
+                marker_size=dff_cities[year].apply(lambda row: max(row // 1.5, 7)),
+                marker_color=level_param['color'],
                 customdata=list(zip(dff_cities.index, dff_cities[year], dff_cities['delta'], dff_cities['level'],
                                     dff_cities['description'])),
                 hovertemplate='<b>%{customdata[0]}</b><br><br>'
@@ -146,9 +137,6 @@ def update_pollution_map(year, show_labels, show_markers, theme, switch_on):
         paper_bgcolor='rgba(0,0,0,0)',
         plot_bgcolor='rgba(0,0,0,0)',
         template=f"{template_from_url(theme)}{'' if switch_on else '_dark'}",
-        # transition_duration=1000,
-        # transition_easing='bounce-in-out',
-
     )
 
     return fig

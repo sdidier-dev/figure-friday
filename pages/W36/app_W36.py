@@ -11,6 +11,14 @@ from dash_iconify import DashIconify
 import plotly.graph_objects as go
 
 import pages.W36.components as components
+from config import pollution_levels
+
+md_levels_info = [
+    html.Div([
+        html.Span(f'{level}:', style={'font-size': 16, 'color': pollution_levels[level]['color']}), html.Br(),
+        pollution_levels[level]['description'], html.Br(), html.Br(),
+    ]) for level in pollution_levels
+]
 
 bar_header_controls = [
     'Top ',
@@ -32,20 +40,41 @@ bar_header_controls = [
 ]
 
 layout_W36 = html.Div([
+    # pollution levels info
+    dmc.Drawer(
+        md_levels_info,
+        id="levels-info-drawer",
+        title="Pollution Levels Description",
+        zIndex=10000,
+        styles={
+            'title': {'flex': 1, 'text-align': 'center', 'font-size': 20, 'font-weight': 700},
+            'header': {'display': 'flex', 'border-bottom': '2px solid var(--bs-secondary)'}
+        },
+    ),
     # Upper cards
     html.Div([
         # Map
         dbc.Card([
-            dbc.CardHeader(id='pollution-map-title', className='fs-5 text-body text-center'),
+            dbc.CardHeader([
+                dmc.Tooltip(
+                    label="Pollution Levels Description",
+                    position="right", withArrow=True,
+                    children=dmc.ActionIcon(
+                        DashIconify(icon='clarity:info-line', width=25),
+                        id="level-info-map-btn",
+                        variant="transparent", color='var(--bs-primary)')
+                ),
+                html.Div(id='pollution-map-title', className='flex-fill fs-5 text-body text-center'),
+            ], className='d-flex align-items-center'),
             dbc.CardBody(components.pollution_map_graph, className='p-2'),
-        ], className='flex-fill', style={'min-width': 300, 'min-height': 400}),
-        # Bar
+        ], className='flex-fill', style={'min-width': 300}),
+        # Bars
         dbc.Card([
             dbc.CardHeader(bar_header_controls, id='pollution-bar-title',
                            className='d-flex justify-content-center fs-5 text-body text-nowrap'),
             dbc.CardBody(components.pollution_top_bar_graph, className='p-2'),
-        ], className='flex-fill', style={'min-width': 300, 'min-height': 400}),
-    ], className='h-50 d-flex flex-wrap overflow-auto gap-2'),
+        ], className='flex-fill', style={'min-width': 300}),
+    ], className='h-50 d-flex flex-wrap overflow-auto gap-2', style={'min-height': 400}),
     html.Span('Select the Year for the Map and the Bar Plot Above:', className='text-muted', style={'font-size': 14}),
     dcc.Slider(
         id="year-pollution-slider",
@@ -54,14 +83,25 @@ layout_W36 = html.Div([
         tooltip={"placement": "bottom", "always_visible": True},
         className='dbc mb-2'
     ),
+    # lines
     dbc.Card([
         dbc.CardHeader([
-            'Historical PM2.5 Concentration from ',
-            html.Span('1850', className='fw-bold text-primary'), ' to ',
-            html.Span('2021', className='fw-bold text-primary')
-        ], className='fs-5 text-body text-center'),
+            dmc.Tooltip(
+                label="Pollution Levels Description",
+                position="right", withArrow=True,
+                children=dmc.ActionIcon(
+                    DashIconify(icon='clarity:info-line', width=25),
+                    id="level-info-line-btn",
+                    variant="transparent", color='var(--bs-primary)')
+            ),
+            html.Div([
+                'Historical PM2.5 Concentration from ',
+                html.Span('1850', className='fw-bold text-primary'), ' to ',
+                html.Span('2021', className='fw-bold text-primary')
+            ], className='flex-fill fs-5 text-body text-center'),
+        ], className='d-flex align-items-center'),
         dbc.CardBody(components.pollution_historic_line, className='p-2'),
-    ], className='flex-fill', style={'min-width': 300, 'min-height': 400}),
+    ], className='flex-fill overflow-auto', style={'min-width': 300, 'min-height': 400}),
 
 ], className='flex-fill d-flex flex-column p-2 overflow-auto')
 
@@ -96,6 +136,16 @@ def update_pollution_map_card_header(year, show_labels, show_markers):
 )
 def update_pollution_bar_card_header_year(year):
     return year
+
+
+@callback(
+    Output("levels-info-drawer", "opened"),
+    Input("level-info-line-btn", "n_clicks"),
+    Input("level-info-map-btn", "n_clicks"),
+    prevent_initial_call=True,
+)
+def open_levels_info_drawer(*_):
+    return True
 
 
 if __name__ == '__main__':
