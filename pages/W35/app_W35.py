@@ -72,7 +72,7 @@ else:
         __name__,
         path="/W35",
         name="W35",  # used as label for the main app navlink
-        title="People Map of the US",
+        title="TEST People Map of the US",
         description='What if we replace the names of US cities by the name of their most Wikipedia’ed resident '
                     '(from July 2015 through May 2019): people born in, lived in, or connected to a place?',
         image="assets/W35.jpg",  # used by the tooltip for the main app navbar
