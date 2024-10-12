@@ -16,7 +16,7 @@ def main_app_navbar():
                     disabled=page.get('disabled', False),
                     label=page['name'],
                     # DASH_URL_BASE_PATHNAME needs a trailing '/', so must be removed from page['path']
-                    href=os.getenv('DASH_URL_BASE_PATHNAME', '') + page['path'][1:],
+                    href=os.getenv('DASH_URL_BASE_PATHNAME', '/') + page['path'][1:],
                     color='var(--bs-primary)', variant="filled", fw=500, noWrap=True,
                 ),
             ),
@@ -30,7 +30,7 @@ def main_app_navbar():
             transitionProps={'duration': 300, 'transition': 'scale-x'})
         for page in page_registry.values()
         # Note: add class z-3 and background so that the controls drawer is behind the navbar when collapsed
-    ], className='d-flex flex-column z-3 border-end border-primary border-2 mb-2',
+    ], className='d-flex flex-column bg-body z-3 border-end border-primary border-2 mb-2',
         style={'width': 60, 'background': 'var(--bs-body-bg)'})
 
 

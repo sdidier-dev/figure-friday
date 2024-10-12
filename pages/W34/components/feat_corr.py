@@ -33,6 +33,7 @@ heatmap_corr_graph = html.Div([
     dcc.Graph(
         id='heatmap-corr-graph',
         responsive=True,
+        config={'displayModeBar': False},
         style={'min-width': 500, 'min-height': 300},
         className='h-100 flex-fill'
     )
@@ -51,6 +52,7 @@ detail_corr_graph = html.Div([
         dcc.Graph(
             id='detail-corr-graph',
             responsive=True,
+            config={'displayModeBar': False},
             style={'min-width': 500, 'min-height': 300},
             className='h-100'
         )

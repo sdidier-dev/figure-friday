@@ -109,6 +109,7 @@ genre_graph = html.Div([
     dcc.Graph(
         id='genre-graph',
         responsive=True,
+        config={'displayModeBar': False},
         className='h-100'
     )
 ], className='h-100', style={'position': 'relative'})

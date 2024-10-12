@@ -14,16 +14,16 @@ app = Dash(
 
 server = app.server
 
-page_container.className = 'flex-fill'
+page_container.className = 'flex-fill overflow-auto'
 
 app.layout = dmc.MantineProvider([
     dcc.Location(id='current-url-location'),
     html.Div([
-        main_app_header(),
+        main_app_header(app.config.url_base_pathname),
         html.Div([
             main_app_navbar(),
             page_container
-        ], className='flex-fill d-flex'),
+        ], className='flex-fill d-flex overflow-auto'),
     ], className='d-flex flex-column vh-100')
 ])
 

@@ -1,0 +1,15 @@
+@font-face {
+    font-family: Neue Regrade;
+    src: url('Neue Regrade Bold.otf');
+}
+
+#home-page {
+    a:not(.btn) {
+        color: var(--bs-body-color);
+        transition: color 0.5s;
+
+        &:hover {
+            color: var(--bs-link-color);
+        }
+    }
+}

@@ -7,17 +7,16 @@ from dash_iconify import DashIconify
 page_titles = {}
 
 
-def main_app_header():
+def main_app_header(url_base_pathname):
     global page_titles
     page_titles = {page['path']: page['title'] for page in page_registry.values()}
-
     return html.Div([
         html.A(
             html.Div([
                 DashIconify(icon="cil:graph", width=25, color='var(--bs-primary)'),
                 html.Span(" FIGURE FRIDAY", className='text-linear-gradient fs-5 fw-bolder text-nowrap')
             ], className='d-inline-flex gap-1'),
-            href="/", className='text-decoration-none'),
+            href=url_base_pathname if url_base_pathname else "/", className='text-decoration-none'),
 
         html.Div(id='app-title', className='flex-grow-1 text-center fs-3'),
 
@@ -34,6 +33,10 @@ def main_app_header():
                 radio_props=dict(value=dbc.themes.SOLAR),
                 button_props=dict(outline=False, color="primary"),
                 offcanvas_props={"placement": "end"}
+            ),
+            html.A(
+                DashIconify(icon="mdi:github", width=34),
+                href="https://github.com/sdidier-dev/figure-friday", target="_blank", className='text-body mx-2'
             ),
         ], className='d-inline-flex gap-2'),
     ], className='d-flex align-items-center border-bottom border-primary border-2 mx-2', style={'height': 60})

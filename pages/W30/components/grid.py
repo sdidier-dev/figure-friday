@@ -6,7 +6,7 @@ import dash_ag_grid as dag
 import pandas as pd
 
 df = pd.read_csv(
-    # 'assets/rural-investment.csv', #for dev
+    # r'E:\Python\Projects\figure-friday\figure-friday\pages\W30\assets\rural-investment.csv', #for dev
     'https://raw.githubusercontent.com/plotly/Figure-Friday/main/2024/week-30/rural-investments.csv',
     usecols=[
         'State Name', 'Congressional District', 'County FIPS', 'County', 'Program Area', 'Program',

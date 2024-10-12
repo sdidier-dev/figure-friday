@@ -36,7 +36,8 @@ map_controls = html.Div([
         ),
         dcc.Graph(
             id='graph-invest-distrib',
-            config=dict(responsive=True),
+            responsive=True,
+            config={'displayModeBar': False},
             style={'height': 100, 'width': 300}
         ),
         dcc.RangeSlider(
