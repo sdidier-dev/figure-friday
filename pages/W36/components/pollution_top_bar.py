@@ -3,7 +3,7 @@ from dash import dcc, Input, Output, callback
 import plotly.graph_objects as go
 import pandas as pd
 
-from ..config import df_cities
+from ..config_W36 import df_cities
 
 pollution_top_bar_graph = dcc.Graph(
     id='pollution-top-bar-graph',

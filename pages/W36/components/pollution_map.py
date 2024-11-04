@@ -4,7 +4,7 @@ from dash import dcc, html, Input, Output, callback
 import dash_mantine_components as dmc
 import plotly.graph_objects as go
 
-from ..config import df_cities, pollution_levels
+from ..config_W36 import df_cities, pollution_levels
 
 
 # internal function to wrap 'description' text for hover

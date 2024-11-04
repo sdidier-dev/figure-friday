@@ -1,0 +1,18 @@
+#_dash-app-content {
+    height: 100vh;
+}
+
+/* customized fig rangeslider */
+[class^="rangeslider-handle"] {
+    width: 6px;
+    rx: 3px;
+}
+
+.rangeslider-slidebox {
+    stroke: grey;
+    rx: 1px;
+}
+
+.rangeslider-handle-max {
+    x: -2px;
+}

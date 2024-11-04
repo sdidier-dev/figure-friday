@@ -4,7 +4,7 @@
     src: url('Neue Regrade Bold.otf');
 }
 
-/* custom <a> color for the hime page*/
+/* custom <a> color for the home page*/
 #home-page {
     a:not(.btn) {
         color: var(--bs-body-color);
@@ -68,4 +68,19 @@
 /* remove the info control from the maps */
 .maplibregl-control-container {
     display: none;
+}
+
+/* customized fig rangeslider */
+[class^="rangeslider-handle"] {
+    width: 6px;
+    rx: 3px;
+}
+
+.rangeslider-slidebox {
+    stroke: grey;
+    rx: 1px;
+}
+
+.rangeslider-handle-max {
+    x: -2px;
 }

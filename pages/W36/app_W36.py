@@ -4,7 +4,7 @@ import dash_mantine_components as dmc
 from dash_iconify import DashIconify
 
 import pages.W36.components as components
-from pages.W36.config import pollution_levels
+from pages.W36.config_W36 import pollution_levels
 
 md_levels_info = [
     html.Div([

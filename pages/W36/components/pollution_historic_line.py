@@ -4,7 +4,7 @@ import dash_mantine_components as dmc
 import plotly.graph_objects as go
 import pandas as pd
 
-from ..config import df, pollution_levels
+from ..config_W36 import df, pollution_levels
 
 min_data = {'cities': df.idxmin(axis='columns').to_list(), 'val': df.min(axis='columns').to_list()}
 max_data = {'cities': df.idxmax(axis='columns').to_list(), 'val': df.max(axis='columns').to_list()}
