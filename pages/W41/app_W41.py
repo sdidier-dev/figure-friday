@@ -106,7 +106,7 @@ else:
         *Data Source: [New York State Open Data](https://data.ny.gov/Transportation/MTA-Daily-Ridership-Data-Beginning-2020/vxuj-8kew/about_data).  
         Created March 15, 2022; Last Updated October 12, 2024*        
         """,
-        disabled=True,
+        disabled=False,
     )
     layout = html.Div([
         layout_W41
