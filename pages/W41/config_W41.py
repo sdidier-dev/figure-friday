@@ -7,9 +7,9 @@ import pandas as pd
 # assets_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '.', 'assets'))
 
 df = pd.read_csv(
-    r'E:\Python\Projects\figure-friday\figure-friday\pages\W41\assets\MTA_Daily_Ridership_Data__Beginning_2020_20241009.csv',
+    # r'E:\Python\Projects\figure-friday\figure-friday\pages\W41\assets\MTA_Daily_Ridership_Data__Beginning_2020_20241009.csv',
     # f'{assets_dir}/MTA_Daily_Ridership_Data__Beginning_2020_20241009.csv',  # for dev
-    # 'https://raw.githubusercontent.com/plotly/Figure-Friday/main/2024/week-36/air-pollution.csv',
+    'https://raw.githubusercontent.com/plotly/Figure-Friday/main/2024/week-41/MTA_Daily_Ridership_Data__Beginning_2020_20241009.csv',
     index_col='Date',
     # parse_dates=['Date'],
     date_format={'Date': '%m/%d/%Y'}
