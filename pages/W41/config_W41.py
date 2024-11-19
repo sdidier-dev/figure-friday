@@ -1,15 +1,17 @@
 import json
 import os
 
+import numpy as np
 import pandas as pd
 
-assets_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '.', 'assets'))
+# assets_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '.', 'assets'))
 
 df = pd.read_csv(
-    # r'E:\Python\Projects\figure-friday\figure-friday\pages\W41\assets\MTA_Daily_Ridership_Data__Beginning_2020_20241009.csv',
-    f'{assets_dir}/MTA_Daily_Ridership_Data__Beginning_2020_20241009.csv',  # for dev
+    r'E:\Python\Projects\figure-friday\figure-friday\pages\W41\assets\MTA_Daily_Ridership_Data__Beginning_2020_20241009.csv',
+    # f'{assets_dir}/MTA_Daily_Ridership_Data__Beginning_2020_20241009.csv',  # for dev
     # 'https://raw.githubusercontent.com/plotly/Figure-Friday/main/2024/week-36/air-pollution.csv',
-    parse_dates=['Date'],
+    index_col='Date',
+    # parse_dates=['Date'],
     date_format={'Date': '%m/%d/%Y'}
 )
 
@@ -30,15 +32,22 @@ df.rename(columns={
     'Staten Island Railway: % of Comparable Pre-Pandemic Day': 'Staten Island Railway%'
 }, inplace=True)
 
-# # dff = df.resample("MS").sum().reset_index()
-# # # dff2 = df.groupby(pd.Grouper(freq="2QS")).sum()
-# # # dff = df.groupby(pd.Grouper(key='Date', freq=agg_sum)).sum().reset_index()
+transports = [t for t in df.columns if '%' not in t and t != 'Date']
+
+df.replace(0, 1, inplace=True)
+# add comparable pre-pandemic ridership number
+df = df.assign(**{t + '_pre': (df[t] * 100 / df[t + '%']) for t in transports})
+# remove % col
+df.drop([c for c in df.columns if '%' in c], axis="columns", inplace=True)
+# add difference actual - comparable pre-pandemic ridership
+df = df.assign(**{t + '_diff': (df[t] - df[t + '_pre']) for t in transports})
 
 # little helper to convert in ms
 to_ms = {
-    'H': 1000 * 60 * 60,
     'D': 1000 * 60 * 60 * 24,
-    'W': 1000 * 60 * 60 * 24 * 7,
+    'W-SAT': 1000 * 60 * 60 * 24 * 7,
+    'MS': 1000 * 60 * 60 * 24 * 365 / 12,
+    'QS': 1000 * 60 * 60 * 24 * 365 / 4,
+    '2QS': 1000 * 60 * 60 * 24 * 365 / 2,
+    'YS': 1000 * 60 * 60 * 24 * 365,
 }
-
-transports = [t for t in df.columns if '%' not in t and t != 'Date']

@@ -1,3 +1,2 @@
-from .MTA_aggregate_histogram import MTA_aggregate_histogram
-from .MTA_pre_pandemic_bar import MTA_pre_pandemic_bar
+from .MTA_aggregate_bar import MTA_aggregate_title_controls, MTA_aggregate_bar
 

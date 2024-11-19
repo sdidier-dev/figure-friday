@@ -14,7 +14,6 @@ import plotly.graph_objects as go
 
 import pages.W41.components as components
 
-
 # date: weekday, week of year, month, year
 # total: overall since 2020, by year, month, week
 # mean: overall yearly/monthly/weekly/daily mean
@@ -27,90 +26,20 @@ import pages.W41.components as components
 # decomposition: trend + seasonality+...
 # auto-correlation
 
-
-MTA_aggregate_controls = [
-    dmc.Select(
-        id="MTA-aggregate-sum-select",
-        data=[
-            {"value": "TOTAL", "label": "Total"},
-            {"value": "D", "label": "Daily Mean"},
-            {"value": "W-SAT", "label": "Weekly Mean"},
-            {"value": "MS", "label": "Monthly Mean"},
-            {"value": "QS", "label": "Quarterly Mean"},
-            {"value": "2QS", "label": "Half-Yearly Mean"},
-            {"value": "YS", "label": "Yearly Mean"},
-        ],
-        value="TOTAL",
-        size="xs", w=180, searchable=True, allowDeselect=False, checkIconPosition="right",
-        variant='unstyled',
-        classNames={"input": 'fw-bold text-primary text-end text-decoration-underline'},
-        styles={"input": {'font-family': 'Source Sans Pro', 'font-size': 22, 'cursor': 'pointer'}},
-        rightSection=DashIconify(icon="mynaui:chevron-up-down"), rightSectionWidth=15,
-        rightSectionPointerEvents="none",
-    ),
-    'of Ridership by',
-    dmc.Select(
-        id="MTA-aggregate-mean-select",
-        data=[
-            {"value": "ALL", "label": "Overall"},
-            {"value": "M12", "label": "Year"},
-            {"value": "M6", "label": "Semester"},
-            {"value": "M3", "label": "Quarter"},
-            {"value": "M1", "label": "Month"},
-            {"value": "W", "label": "Week"},
-            {"value": "D", "label": "Day"},
-        ],
-        value="M1",
-        size="xs", w=180, searchable=True, allowDeselect=False, checkIconPosition="right",
-        variant='unstyled',
-        classNames={"input": 'fw-bold text-primary text-decoration-underline'},
-        styles={"input": {'font-family': 'Source Sans Pro', 'font-size': 22, 'cursor': 'pointer'}},
-        leftSection=DashIconify(icon="mynaui:chevron-up-down"), leftSectionWidth=15,
-        rightSection=' ', rightSectionWidth=0,
-        leftSectionPointerEvents="none", rightSectionPointerEvents="none",
-    )
-]
-
-
-@callback(
-    Output('MTA-aggregate-mean-select', 'data'),
-    Input('MTA-aggregate-sum-select', "value"),
-    State('MTA-aggregate-mean-select', 'data'),
-)
-def update_aggregate_mean_select_data(sum_value, mean_data):
-    disabled_options = {
-        "TOTAL": [],
-        "D": ['D'],
-        "W-SAT": ['W', 'D'],
-        "MS": ['M1', 'W', 'D'],
-        "QS": ['M3', 'M1', 'W', 'D'],
-        "2QS": ['M6', 'M3', 'M1', 'W', 'D'],
-        "YS": ['M12', 'M6', 'M3', 'M1', 'W', 'D'],
-    }
-
-    patched_options = Patch()
-    for i, option in enumerate(mean_data):
-        patched_options[i]["disabled"] = option['value'] in disabled_options[sum_value]
-
-    return patched_options
-
-
 layout_W41 = html.Div([
 
     dbc.Card([
-        dbc.CardHeader(MTA_aggregate_controls, id='pollution-bar-title',
+        dbc.CardHeader(components.MTA_aggregate_title_controls,
                        className='d-flex justify-content-center fs-5 text-body text-nowrap'),
-        dbc.CardBody(components.MTA_aggregate_histogram, className='p-2'),
-    ], className='flex-fill overflow-auto', style={'min-width': 300, 'min-height': 400}),
+        dbc.CardBody(components.MTA_aggregate_bar, className='p-2'),
+    ], className='flex-fill', style={'min-width': 300, 'min-height': 400}),
 
     dbc.Card([
-        dbc.CardHeader('Pre-Pandemic Comparison',
+        dbc.CardHeader('Ridership Prediction',
                        className='d-flex justify-content-center fs-5 text-body text-nowrap'),
-        dbc.CardBody(components.MTA_pre_pandemic_bar, className='p-2'),
+        dbc.CardBody('⚒ Coming Soon!', className='p-2'),
     ], className='flex-fill overflow-auto', style={'min-width': 300, 'min-height': 400}),
-
-], className='flex-fill d-flex flex-column p-2 overflow-auto')
-
+], className='flex-fill d-flex flex-column gap-2 p-2 overflow-auto')
 
 
 if __name__ == '__main__':
