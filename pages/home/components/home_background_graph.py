@@ -40,7 +40,7 @@ def update_home_graph(theme, switch_on):
     primary_color = fig['layout']['template']['layout']['colorway'][0]
 
     # generate a random network
-    n = 400
+    n = 200
     pos = {i: (abs(random.gauss()), random.gauss()) for i in range(n)}
     G = nx.soft_random_geometric_graph(n, 0.5, pos=pos, p_dist=lambda x: 0.15)
 

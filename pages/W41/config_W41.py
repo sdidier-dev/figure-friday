@@ -1,19 +1,14 @@
-import json
 import os
-
-import numpy as np
 import pandas as pd
 
-# assets_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '.', 'assets'))
+if os.getenv('DASH_URL_BASE_PATHNAME', 'prod') == 'dev':
+    assets_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '.', 'assets'))
+    dataset = f'{assets_dir}/MTA_Daily_Ridership_Data__Beginning_2020_20241009.csv'
+else:
+    plotly_dataset_repo = 'https://raw.githubusercontent.com/plotly/Figure-Friday/main/2024'
+    dataset = plotly_dataset_repo + '/week-41/MTA_Daily_Ridership_Data__Beginning_2020_20241009.csv'
 
-df = pd.read_csv(
-    # r'E:\Python\Projects\figure-friday\figure-friday\pages\W41\assets\MTA_Daily_Ridership_Data__Beginning_2020_20241009.csv',
-    # f'{assets_dir}/MTA_Daily_Ridership_Data__Beginning_2020_20241009.csv',  # for dev
-    'https://raw.githubusercontent.com/plotly/Figure-Friday/main/2024/week-41/MTA_Daily_Ridership_Data__Beginning_2020_20241009.csv',
-    index_col='Date',
-    # parse_dates=['Date'],
-    date_format={'Date': '%m/%d/%Y'}
-)
+df = pd.read_csv(dataset, index_col='Date', date_format={'Date': '%m/%d/%Y'})
 
 df.rename(columns={
     'Subways: Total Estimated Ridership': 'Subways',

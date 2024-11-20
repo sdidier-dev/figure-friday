@@ -13,3 +13,33 @@
         }
     }
 }
+
+/* Style and animate border of contact me card*/
+.contact-me-card {
+    overflow: hidden;
+    &::before {
+        position: absolute;
+        inset: -1em;
+        z-index: -1; /* place behind card content, so card text is selectable, etc */
+        border: solid 1.25em;
+        border-image: conic-gradient(from var(--angle), #669900, #99cc33, #ccee66, #006699, #3399cc, #990066, #cc3399,
+        #ff6600, #ff9900, #ffcc00, #669900) 1;
+        filter: blur(.75em);
+        animation: rotate-border 5s linear infinite;
+        /* needed so pseudo is displayed */
+        content: ''
+    }
+}
+
+/* must register --a to animate it */
+@property --angle {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false
+}
+
+@keyframes rotate-border {
+    to {
+        --angle: 1turn
+    }
+}

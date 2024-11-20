@@ -54,12 +54,23 @@ def set_title(url):
 # Switch color-theme for DBC and DMC components
 clientside_callback(
     """
-    (switchOn) => {
-       document.documentElement.setAttribute('data-bs-theme', switchOn ? 'light' : 'dark');
-       document.documentElement.setAttribute('data-mantine-color-scheme', switchOn ? 'light' : 'dark');
+    (switchOn, url) => {
+        let splittedURL = url.split("/")
+
+        if (splittedURL[splittedURL.length-1]) {
+            document.documentElement.setAttribute('data-bs-theme', switchOn ? 'light' : 'dark');
+            document.documentElement.setAttribute('data-mantine-color-scheme', switchOn ? 'light' : 'dark');        
+        }
+        // force dark theme if home page
+        else {
+            document.documentElement.setAttribute('data-bs-theme', 'dark');
+            document.documentElement.setAttribute('data-mantine-color-scheme', 'dark');        
+        }
+
        return window.dash_clientside.no_update
     }
     """,
     Output("color-mode-switch", "id"),
     Input("color-mode-switch", "checked"),
+    Input('current-url-location', 'pathname')
 )

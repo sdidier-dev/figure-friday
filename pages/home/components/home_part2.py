@@ -93,11 +93,11 @@ home_table = html.Div(
                                     href=row['data source'], target='_blank'
                                 ), style={'text-align': 'right'}
                             ),
-                        ], style={'font-size': 20, 'font-family': 'Inter'}
+                        ], style={'font-size': 20}
                     ) for row in home_table_data]
             )  # loop for rows
         ]
-    ), id='home-table', className='d-flex flex-column overflow-y-hidden',
+    ), id='home-table', className='d-flex flex-column overflow-y-hidden dbc',
     style={'max-height': 450, 'max-width': 1000, 'transition': 'max-height 1s'}
 )
 

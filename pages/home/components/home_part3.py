@@ -42,7 +42,7 @@ contact_me_card = dbc.Card(
                     href="mailto:sdidier.dev@gmail.com"
                 )
             ], className='d-flex justify-content-evenly')
-    ], color="primary", outline=True, style={'box-shadow': '0 0 10px var(--bs-primary)'}, className='bg-transparent'
+    ], className='contact-me-card bg-transparent mt-4 p-3', color="primary",
 )
 
 home_part3 = html.Div([
