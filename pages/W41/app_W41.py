@@ -14,33 +14,23 @@ import plotly.graph_objects as go
 
 import pages.W41.components as components
 
-# date: weekday, week of year, month, year
-# total: overall since 2020, by year, month, week
-# mean: overall yearly/monthly/weekly/daily mean
-#       by year monthly/weekly/daily mean
-#       by month weekly/daily mean
-#       by week daily mean
-# overlap by year, month, week
-# compare pre covid
-
 # decomposition: trend + seasonality+...
 # auto-correlation
 
 layout_W41 = html.Div([
-
+    components.MTA_key_figures_grid,
     dbc.Card([
         dbc.CardHeader(components.MTA_aggregate_title_controls,
                        className='d-flex justify-content-center fs-5 text-body text-nowrap'),
-        dbc.CardBody(components.MTA_aggregate_bar, className='p-2'),
-    ], className='flex-fill', style={'min-width': 300, 'min-height': 400}),
+        dbc.CardBody(components.MTA_aggregate_bar, className='p-0'),
+    ], className='flex-fill w-100', style={'min-width': 300, 'min-height': 500}),
 
     dbc.Card([
         dbc.CardHeader('Ridership Prediction',
                        className='d-flex justify-content-center fs-5 text-body text-nowrap'),
         dbc.CardBody('⚒ Coming Soon!', className='p-2'),
-    ], className='flex-fill overflow-auto', style={'min-width': 300, 'min-height': 400}),
-], className='flex-fill d-flex flex-column gap-2 p-2 overflow-auto')
-
+    ], className='flex-fill w-100', style={'min-width': 300, 'min-height': 500}),
+], className='flex-fill d-flex flex-column align-items-center gap-2 p-2 overflow-auto dbc-ag-grid')
 
 if __name__ == '__main__':
     # for local development
@@ -51,7 +41,7 @@ if __name__ == '__main__':
     dbc_css = "https://cdn.jsdelivr.net/gh/AnnMarieW/dash-bootstrap-templates/dbc.min.css"
 
     app = Dash(
-        external_stylesheets=[dbc.themes.SOLAR, dbc_css],
+        external_stylesheets=[dbc.themes.SOLAR, dbc_css, dmc.styles.DATES],
         url_base_pathname='/',
     )
 

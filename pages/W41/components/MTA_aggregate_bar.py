@@ -1,6 +1,6 @@
 from pprint import pprint
 
-from dash import html, Input, Output, dcc, callback, State, Patch, no_update
+from dash import html, Input, Output, dcc, callback, State, Patch, no_update, ctx
 from dash_bootstrap_templates import ThemeChangerAIO, template_from_url
 from datetime import timedelta, datetime, date
 import dash_mantine_components as dmc
@@ -9,16 +9,12 @@ import pandas as pd
 import dash_bootstrap_components as dbc
 from dash_iconify import DashIconify
 
-from ..config_W41 import df, to_ms, transports
+from .custom_date_picker import custom_date_picker
+from ..config_W41 import df, transports, to_ms, plotly_period
 
-# add pre underlay
-# add spinner
-# add custom date range
 # try to use patches
 # add tootips? transportations maps?
 # add MTA API
-
-# bug zomming/panning with diff + pandemic date
 
 # Used in the first select component of the title and for the hover text of the bar fig
 agg1_data_select = {
@@ -41,6 +37,7 @@ disabled_options = {
     "2QS": ['2QS', 'QS', 'MS', 'W-SAT', 'D'],
     "YS": ['YS', '2QS', 'QS', 'MS', 'W-SAT', 'D'],
 }
+
 # #################### Card Header ####################
 MTA_aggregate_title_controls = [
     dmc.Select(
@@ -54,8 +51,8 @@ MTA_aggregate_title_controls = [
         classNames={"input": 'fw-bold text-primary text-end text-decoration-underline'},
         styles={"input": {'font-family': 'Source Sans Pro', 'font-size': 22, 'cursor': 'pointer', 'width': None}},
         comboboxProps={"position": "bottom-end", "width": 140},
-        rightSection=DashIconify(icon="mynaui:chevron-up-down"), rightSectionWidth=15,
-        rightSectionPointerEvents="none",
+        rightSection=DashIconify(icon="mynaui:chevron-up-down", color='var(--bs-body-color)'), rightSectionWidth=15,
+        rightSectionPointerEvents="none"
     ),
     'of Ridership by',
     dmc.Select(
@@ -70,13 +67,12 @@ MTA_aggregate_title_controls = [
             {"value": "D", "label": "Day"},
         ],
         value="QS",
-        # value="MS",
         size="xs", w=150, searchable=True, allowDeselect=False, checkIconPosition="right",
         variant='unstyled',
         classNames={"input": 'fw-bold text-primary text-decoration-underline'},
         styles={"input": {'font-family': 'Source Sans Pro', 'font-size': 22, 'cursor': 'pointer'}},
         comboboxProps={"width": 140},
-        leftSection=DashIconify(icon="mynaui:chevron-up-down"), leftSectionWidth=15,
+        leftSection=DashIconify(icon="mynaui:chevron-up-down", color='var(--bs-body-color)'), leftSectionWidth=15,
         rightSection=' ', rightSectionWidth=0,
         leftSectionPointerEvents="none", rightSectionPointerEvents="none",
     )
@@ -100,68 +96,92 @@ def update_aggregate_agg2_select_data(agg1_value, agg2_value, agg2_data):
 
 
 # #################### Card Body ####################
-# Map Pandas period to Plotly period, use for bar xperiod
-plotly_period = {
-    'YS': 'M12',
-    '2QS': 'M6',
-    'QS': 'M3',
-    'MS': 'M1',
-    'W-SAT': to_ms['W-SAT'],
-    'D': to_ms['D']
-}
 
 MTA_aggregate_bar = html.Div([
-    html.Label("Select Transportations:", className='mb-2'),
+    # ############### Drawer with controls ###############
     html.Div([
-        dmc.ChipGroup(
-            id="MTA-aggregate-chipgroup",
-            multiple=True,
-            children=[dmc.Chip(transport, value=transport, color='var(--bs-primary)') for transport in transports],
-            value=['Subways'],
-        ),
-    ], className='d-flex gap-2'),
-
-    html.Div([
-        html.Label("Options:"),
         html.Div([
+            html.Label("Transportations:"),
+            dmc.Checkbox(id="MTA-aggregate-unstack-chk", label="Unstack Transportations Bars", checked=True,
+                         color='var(--bs-primary)', size='xs', mb=8, ms=5, my=3,
+                         styles={'label': {'color': 'var(--mantine-color-dimmed)', 'font-size': 12}}),
             html.Div([
-                dmc.Checkbox(id="MTA-aggregate-pre-chk", label="Show Pre-Pandemic Comparable Period Ridership",
-                             color='var(--bs-primary)', checked=False),
-                dmc.RadioGroup(
-                    dmc.Group([
-                        dmc.Radio(label='Underlay', value='underlay', color='var(--bs-primary)'),
-                        dmc.Radio(label='Difference', value='diff', color='var(--bs-primary)'),
-                        dmc.Radio(label='Percentage', value='percent', color='var(--bs-primary)')
-                    ]),
-                    id="MTA-aggregate-pre-radiogroup",
-                    value="underlay", size="sm",
+                dmc.ChipGroup(
+                    id="MTA-aggregate-chipgroup",
+                    multiple=True,
+                    children=[dmc.Chip(transport, value=transport, color='var(--bs-primary)') for transport in
+                              transports],
+                    value=['Subways', 'Buses'],
                 ),
-            ], className='d-flex gap-3'),
-            html.Div([
-                dmc.Checkbox(id="MTA-aggregate-unstack-chk", label="Unstack Transportations Bars",
-                             color='var(--bs-primary)', checked=False),
-                dmc.Checkbox(id="MTA-aggregate-labels-chk", label="Show Labels",
-                             color='var(--bs-primary)', checked=False),
-                dmc.Checkbox(id="MTA-aggregate-pandemic-date-chk", label="Show Official Pandemic Declaration Date",
-                             color='var(--bs-primary)', checked=False),
-            ], className='d-flex gap-3'),
-        ], className='d-flex flex-column gap-2'),
-    ], className='d-flex gap-3 my-2'),
+            ], className='d-flex flex-wrap gap-2'),
 
-    dcc.Graph(
-        id='MTA-aggregate-graph',
-        responsive=True,
-        config={'displayModeBar': False},
-        className='h-100 flex-fill',
-    )
-], className='h-100 flex-fill d-flex flex-column gap-2')
+            html.Div([
+                custom_date_picker,
+                dmc.Divider(orientation="vertical", color='var(--mantine-color-dimmed)', className='my-3'),
+                dmc.Checkbox(
+                    id="MTA-aggregate-pre-chk", label="Compare Pre-Pandemic Similar Period Ridership",
+                    color='var(--bs-primary)', checked=True,
+                    styles={'label': {'font-size': 16}},
+                    description=dmc.RadioGroup(
+                        dmc.Group([
+                            html.Label("Graph type:"),
+                            dmc.Radio(label='Underlay', value='underlay',
+                                      color='var(--bs-primary)', size="xs", styles={'label': {'padding-left': 5}}),
+                            dmc.Radio(label='Difference', value='diff',
+                                      color='var(--bs-primary)', size="xs", styles={'label': {'padding-left': 5}}),
+                            dmc.Radio(label='Percentage', value='percent',
+                                      color='var(--bs-primary)', size="xs", styles={'label': {'padding-left': 5}})
+                        ], justify='space-between', gap=0),
+                        id="MTA-aggregate-pre-radiogroup",
+                        value="underlay"
+                    ),
+                ),
+                dmc.Divider(orientation="vertical", color='var(--mantine-color-dimmed)', className='my-3'),
+                html.Div([
+                    html.Label("Options:"),
+                    html.Div([
+                        dmc.Checkbox(id="MTA-aggregate-labels-chk", label="Labels",
+                                     color='var(--bs-primary)', checked=False, styles={'label': {'padding-left': 5}}),
+                        dmc.Checkbox(id="MTA-aggregate-pandemic-date-chk", label="Official Pandemic Declaration Date",
+                                     color='var(--bs-primary)', checked=False, styles={'label': {'padding-left': 5}}),
+                    ], className='d-flex flex-column gap-2')
+                ], className='d-flex gap-2')
+            ], className='d-flex align-items-center gap-3 py-2')
+        ], className='border-bottom border-secondary w-100 mx-2', style={'min-width': 1000})
+    ], id='MTA-aggregate-controls-drawer', className='d-flex align-items-end overflow-y-hidden w-100',
+        style={'transition': 'height 1s', 'height': 350}
+    ),
+
+    # ############### Drawer collapse button ###############
+    html.Div([
+        dmc.ActionIcon(
+            DashIconify(id='MTA-aggregate-collapse-controls-btn-icon', icon='mdi:chevron-double-up', width=25),
+            id="MTA-aggregate-collapse-controls-btn",
+            radius='xl', variant="outline", color='var(--bs-secondary)', bg='var(--bs-body-bg)',
+        )],
+        className='d-flex justify-content-center align-items-center overflow-visible mb-3', style={'height': 0}
+    ),
+
+    # ############### Bar graph ###############
+    html.Div([
+        dmc.LoadingOverlay(
+            id="MTA-aggregate-graph-loading-overlay",
+            visible=True,
+            loaderProps={"type": "bars", "color": "var(--bs-primary)"},
+            overlayProps={"radius": "sm", "blur": 2},
+        ),
+        dcc.Graph(
+            id='MTA-aggregate-graph',
+            responsive=True,
+            config={'displayModeBar': False},
+            className='h-100'
+        )
+    ], className='h-100 m-2', style={'position': 'relative'}),
+], className='h-100 flex-fill d-flex flex-column overflow-y-hidden')
 
 
 def set_xticks(xrange, agg2_value):
-    # find x_range
-    start_datetime = datetime.fromisoformat(xrange[0])
-    end_datetime = datetime.fromisoformat(xrange[1])
-    range_timedelta = end_datetime - start_datetime
+    range_timedelta = xrange[1] - xrange[0]
 
     # 6Y <= x_range or grouped by year or semester
     if timedelta(days=365 * 10) <= range_timedelta or agg2_value == 'YS':
@@ -190,31 +210,65 @@ def set_xticks(xrange, agg2_value):
     return xticks
 
 
+@callback(
+    Output("MTA-aggregate-collapse-controls-btn-icon", "flip"),
+    Output("MTA-aggregate-controls-drawer", "style"),
+    Output('MTA-aggregate-graph', 'figure', allow_duplicate=True),
+    Input("MTA-aggregate-collapse-controls-btn", "n_clicks"),
+    prevent_initial_call=True
+)
+def collapse_controls_add_legend(n_clicks):
+    patched_figure = Patch()
+    patched_figure["layout"]["showlegend"] = True if n_clicks % 2 else False
+    return (
+        "vertical" if n_clicks % 2 else None,
+        {'transition': 'height 1s', 'height': 0 if n_clicks % 2 else 350},
+        patched_figure
+    )
+
+
+# makes the loader visible when reloading data
+@callback(
+    Output("MTA-aggregate-graph-loading-overlay", "visible", allow_duplicate=True),
+    Input('MTA-aggregate-chipgroup', "value"),
+    Input(ThemeChangerAIO.ids.radio("theme"), "value"),
+    Input("color-mode-switch", "checked"),
+    Input('custom-date-picker-range-store', 'data'),
+    Input('MTA-aggregate-agg1-select', "value"),
+    Input('MTA-aggregate-agg2-select', "value"),
+    Input('MTA-aggregate-pre-chk', 'checked'),
+    Input('MTA-aggregate-pre-radiogroup', 'value'),
+    Input('MTA-aggregate-unstack-chk', 'checked'),
+    Input('MTA-aggregate-labels-chk', 'checked'),
+    prevent_initial_call=True,
+)
+def reactivate_graph_loader(*_):
+    return True
+
+
 # Note: can't use a Patch() while modifying the theme, the fig must be fully regenerated
 # here we also update the transportation chips to match the fig colorway
 @callback(
     Output('MTA-aggregate-chipgroup', 'children'),
     Output('MTA-aggregate-graph', 'figure'),
+    Output("MTA-aggregate-graph-loading-overlay", "visible"),
     Input('MTA-aggregate-chipgroup', "value"),
     Input(ThemeChangerAIO.ids.radio("theme"), "value"),
     Input("color-mode-switch", "checked"),
+    Input('custom-date-picker-range-store', 'data'),
     Input('MTA-aggregate-agg1-select', "value"),
     Input('MTA-aggregate-agg2-select', "value"),
-
     Input('MTA-aggregate-pre-chk', 'checked'),
     Input('MTA-aggregate-pre-radiogroup', 'value'),
-
     Input('MTA-aggregate-unstack-chk', 'checked'),
     State('MTA-aggregate-labels-chk', 'checked'),
     State('MTA-aggregate-pandemic-date-chk', 'checked'),
-
     State('MTA-aggregate-graph', 'figure'),
     State('MTA-aggregate-chipgroup', 'children'),
-
 )
 def update_theme_aggregate_bar(
-        selected_transports, theme, switch_on, agg1_value, agg2_value, pre_show, pre_type, unstack, show_labels,
-        pandemic_date_show, fig, chips,
+        selected_transports, theme, switch_on, date_range, agg1_value, agg2_value, pre_show, pre_type, unstack,
+        show_labels, pandemic_date_show, fig, chips,
 ):
     # Save existing x range to re-apply it at the end
     xaxis_range = None
@@ -226,6 +280,7 @@ def update_theme_aggregate_bar(
     # set the layout first to get the theme colors
     fig.update_layout(
         showlegend=False,
+        legend={'orientation': 'h', 'y': 1},
         margin={'autoexpand': True, "r": 5, "t": 0, "l": 0, "b": 5},
         template=f"{template_from_url(theme)}{'' if switch_on else '_dark'}",
     )
@@ -251,9 +306,15 @@ def update_theme_aggregate_bar(
         return patched_chips, fig
 
     # Data pre-processing
+
+    # filter selected_transports cols and indexes in date_range
+    cols = selected_transports + [t + '_diff' for t in selected_transports] + [t + '_pre' for t in selected_transports]
+    dff = df[cols][df.index.isin(pd.date_range(*date_range))]
+
     # First aggregation by agg1_value to have weekly/monthly... values
     # Except for 'TOTAL' that will be summed below and 'D' as data is already by day
-    dff = df.resample(agg1_value).sum() if agg1_value not in ['TOTAL', 'D'] else df.copy()
+    if agg1_value not in ['TOTAL', 'D']:
+        dff = dff.resample(agg1_value).sum()
 
     # Second aggregation to have the mean by agg2_value or the sum if agg1_value == 'TOTAL'
     if agg1_value == 'TOTAL':
@@ -264,7 +325,7 @@ def update_theme_aggregate_bar(
     # add percent of pre-pandemic
     if pre_show and pre_type == 'percent':
         if agg2_value != 'ALL':
-            dff = dff.assign(**{t + '_percent': dff[t] / dff[t + '_pre'] for t in transports})
+            dff = dff.assign(**{t + '_percent': dff[t] / dff[t + '_pre'] for t in selected_transports})
         else:
             for t in transports:
                 dff[t + '_percent'] = dff[t] / dff[t + '_pre']
@@ -282,13 +343,15 @@ def update_theme_aggregate_bar(
         'QS': agg1_label_hover + " - <b>Q%q '%y</b>" + pre_hover,
         'MS': agg1_label_hover + " - <b>%b '%y</b>" + pre_hover,
         'W-SAT': agg1_label_hover + " - <b>S%U %b '%y</b>" + pre_hover,
-        'D': agg1_label_hover + " - <b>%e %b '%y</b>" + pre_hover
+        'D': agg1_label_hover + " - <b>%b. %e, '%y</b>" + pre_hover
     }
 
     # Add traces
     if not (pre_show and pre_type == 'underlay'):
-        # Pre-Pandemic difference/percentage using barmode='group'/'stack': no need to deal with offset/base/width
-        fig.update_layout(barmode='group' if unstack else 'stack', bargap=0.1)
+        # Pre-Pandemic difference/percentage using barmode='group'/'relative': no need to deal with offset/base/width
+        # Note 'relative' is to stack positive bars together and negative bars together
+        # Useful for Pre-Pandemic difference as it can have positive and negative values
+        fig.update_layout(barmode='group' if unstack else 'relative', bargap=0.1)
 
         y_format = "%{y:.0%}" if pre_show and pre_type == 'percent' else "%{y:.4s}"
 
@@ -411,12 +474,13 @@ def update_theme_aggregate_bar(
         )
         fig.update_yaxes(fixedrange=True)
     else:
-        date_min = dff.index.min()
-        date_max = dff.index.max()
-
-        # set the ticks depending on the range and agg2_value
-        xticks = set_xticks(xaxis_range if xaxis_range else [date_min.isoformat(), date_max.isoformat()],
-                            agg2_value)
+        # Re-apply the xrange set by the use or set the full range if the date range or the period is modified
+        if xaxis_range and ctx.triggered_id not in ['custom-date-picker-range-store', 'MTA-aggregate-agg2-select']:
+            xaxis_range = [datetime.fromisoformat(xaxis_range[0]), datetime.fromisoformat(xaxis_range[1])]
+        else:
+            freq = 'D' if agg2_value == 'D' else 'W' if agg2_value == 'W-SAT' else agg2_value[:-1]
+            xaxis_range = [dff.index.min(), pd.Period(dff.index.max(), freq).end_time]
+        xticks = set_xticks(xaxis_range, agg2_value)
 
         fig.update_xaxes(
             color=fig['layout']['template']['layout']['font']['color'],
@@ -447,6 +511,9 @@ def update_theme_aggregate_bar(
 
     # add vline and annotation for pandemic declaration date
     # Note: the annotation param of vline doesn't work with dates for x
+    # also note, the x type hint doesn't accept string, but safe to ignore
+
+    # noinspection PyTypeChecker
     fig.add_vline(
         visible=pandemic_date_show,
         x='2020-03-11',
@@ -455,14 +522,15 @@ def update_theme_aggregate_bar(
     fig.add_annotation(
         visible=pandemic_date_show,
         showarrow=False,
-        text='Official declaration of COVID-19 pandemic',
+        text='Official declaration<br>of COVID-19 pandemic',
         textangle=-90,
         font_shadow="0px 0px 5px black",
-        xref="x", x='2020-03-11', xshift=10,
+        xref="x", x='2020-03-11',
         yref="paper", y=0.5,
         hovertext='<b>2020-03-11</b> Official World Health Organization declaration of a global COVID-19 pandemic',
     )
-    return patched_chips, fig
+    # Note: False is to hide the loader when the fig is ready
+    return patched_chips, fig, False
 
 
 @callback(
@@ -480,6 +548,7 @@ def update_disabled_unstack_chk(pre_show, pre_type, unstack):
 
 @callback(
     Output('MTA-aggregate-graph', 'figure', allow_duplicate=True),
+    Output("MTA-aggregate-graph-loading-overlay", "visible", allow_duplicate=True),
     Input('MTA-aggregate-labels-chk', 'checked'),
     State('MTA-aggregate-pre-chk', 'checked'),
     State('MTA-aggregate-pre-radiogroup', 'value'),
@@ -491,7 +560,7 @@ def update_bar_labels(show_labels, pre_show, pre_type, fig):
     patched_figure = Patch()
     for i in range(len(fig['data'])):
         patched_figure["data"][i]["texttemplate"] = y_format if show_labels else None
-    return patched_figure
+    return patched_figure, False
 
 
 @callback(
@@ -499,16 +568,19 @@ def update_bar_labels(show_labels, pre_show, pre_type, fig):
     Input('MTA-aggregate-graph', 'relayoutData'),  # Triggered by zooming/panning on figure
     Input('MTA-aggregate-agg2-select', 'value'),
     State('MTA-aggregate-graph', 'figure'),
+    Input('custom-date-picker-range-store', 'data'),
     prevent_initial_call=True,
 )
-def update_xticks(_, agg2_value, fig):
+def update_xticks(_, agg2_value, fig, date_range):
     if not fig or agg2_value == 'ALL':
         return no_update
 
-    if fig and isinstance(fig["layout"]["xaxis"]["range"][0], str):
-        xaxis_range = fig["layout"]["xaxis"]["range"]
+    if isinstance(fig["layout"]["xaxis"]["range"][0], str):
+        xaxis_range = [datetime.fromisoformat(fig["layout"]["xaxis"]["range"][0]),
+                       datetime.fromisoformat(fig["layout"]["xaxis"]["range"][1])]
     else:
-        xaxis_range = [df.index.min().isoformat(), df.index.max().isoformat()]
+        freq = 'D' if agg2_value == 'D' else 'W' if agg2_value == 'W-SAT' else agg2_value[:-1]
+        xaxis_range = [datetime.fromisoformat(date_range[0]), pd.Period(date_range[1], freq).end_time]
 
     xticks = set_xticks(xaxis_range, agg2_value)
 

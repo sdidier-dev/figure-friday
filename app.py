@@ -9,7 +9,7 @@ dbc_css = "https://cdn.jsdelivr.net/gh/AnnMarieW/dash-bootstrap-templates/dbc.mi
 
 app = Dash(
     use_pages=True,
-    external_stylesheets=[dbc_css, dbc.themes.SOLAR],
+    external_stylesheets=[dbc_css, dbc.themes.SOLAR, dmc.styles.DATES],
 )
 
 server = app.server

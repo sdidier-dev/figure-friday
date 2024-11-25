@@ -46,3 +46,13 @@ to_ms = {
     '2QS': 1000 * 60 * 60 * 24 * 365 / 2,
     'YS': 1000 * 60 * 60 * 24 * 365,
 }
+
+# Map Pandas period to Plotly period, use for bar xperiod
+plotly_period = {
+    'YS': 'M12',
+    '2QS': 'M6',
+    'QS': 'M3',
+    'MS': 'M1',
+    'W-SAT': to_ms['W-SAT'],
+    'D': to_ms['D']
+}
