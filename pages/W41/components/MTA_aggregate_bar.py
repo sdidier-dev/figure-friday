@@ -280,7 +280,7 @@ def update_theme_aggregate_bar(
     # set the layout first to get the theme colors
     fig.update_layout(
         showlegend=False,
-        legend={'orientation': 'h', 'y': 1},
+        legend={'orientation': 'h', 'y': 1, 'itemclick': False, 'itemdoubleclick': False},
         margin={'autoexpand': True, "r": 5, "t": 0, "l": 0, "b": 5},
         template=f"{template_from_url(theme)}{'' if switch_on else '_dark'}",
     )
@@ -455,6 +455,7 @@ def update_theme_aggregate_bar(
                 # note: can't use %{y} using 'overlay' and 'base' in hovertemplate, as y is actually y + base
                 customdata=pre_y,
                 hovertemplate=hovertemplate,
+                showlegend=False
             )
             if not unstack:
                 pre_base = [sum(i) for i in zip(pre_base, pre_y)]

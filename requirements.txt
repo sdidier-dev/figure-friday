@@ -10,3 +10,4 @@ dash-iconify
 python-dotenv
 statsmodels
 networkx
+sktime[all_extras]

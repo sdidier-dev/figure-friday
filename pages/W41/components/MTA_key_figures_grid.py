@@ -91,13 +91,13 @@ columnDefs = [
                 'field': 'previous', 'headerName': 'Previous Period',
                 "valueFormatter": {"function": "d3.format('+.0%')(params.value)"},
                 "headerClass": 'center-aligned-header', "cellClass": 'center-aligned-cell',
-                'cellStyle': cell_style_compare
+                'cellStyle': cell_style_compare, "width": 130,
             },
             {
                 'field': 'pre', 'headerName': 'Pre-Pandemic',
                 "valueFormatter": {"function": "d3.format('+.0%')(params.value)"},
                 "headerClass": 'center-aligned-header', "cellClass": 'center-aligned-cell',
-                'cellStyle': cell_style_compare
+                'cellStyle': cell_style_compare, "width": 130,
             },
         ]
     }
@@ -115,30 +115,45 @@ dashGridOptions = {
 }
 
 MTA_key_figures_grid = html.Div([
+
     html.Div([
         html.Div([
-            'Key Figures over the Last Period of',
-            dmc.NumberInput(
-                id='MTA-key-figures-input',
-                value=6, min=1, max=24,
-                variant='unstyled', size='xs', w=50,
-                stepHoldDelay=500, stepHoldInterval=100,
-                classNames={"input": 'fw-bold fs-4 text-primary text-center text-decoration-underline pb-1'},
-                styles={"input": {'font-family': 'Source Sans Pro'}},
-            ),
-            'Month',
-        ], className='d-flex fs-5 text-body'),
-        html.Span(id='MTA-key-figures-span', className='ms-2 fs-6')
-    ], className='d-flex justify-content-between align-items-center'),
+            html.Div([
+                'Key Figures over the Last Period of',
+                dmc.NumberInput(
+                    id='MTA-key-figures-input',
+                    value=6, min=1, max=24,
+                    variant='unstyled', size='xs', w=50,
+                    stepHoldDelay=500, stepHoldInterval=100,
+                    classNames={"input": 'fw-bold fs-4 text-primary text-center text-decoration-underline pb-1'},
+                    styles={"input": {'font-family': 'Source Sans Pro'}},
+                ),
+                'Month',
+            ], className='d-flex fs-5 text-body'),
+            html.Span(id='MTA-key-figures-span', className='ms-2 fs-6')
+        ], className='d-flex justify-content-between align-items-center p-1'),
 
-    dag.AgGrid(
-        id="MTA-key-figures-grid",
-        columnDefs=columnDefs,
-        defaultColDef=defaultColDef,
-        dashGridOptions=dashGridOptions,
-        style={"height": None, 'width': 662},
-    )
-])
+        dag.AgGrid(
+            id="MTA-key-figures-grid",
+            columnDefs=columnDefs,
+            defaultColDef=defaultColDef,
+            dashGridOptions=dashGridOptions,
+            style={
+                "height": None, 'width': 722,
+                'box-shadow': '0 0 10px var(--bs-primary)',
+                'border-color': 'var(--bs-primary)'
+            }
+        )
+    ]),
+],
+    className='d-flex justify-content-center w-100 pb-2',
+    style={
+        'background-image': 'url("assets/subway.png")',
+        'background-position': 'top 40px right',
+        'background-repeat': 'no-repeat',
+        'background-size': 'cover',
+    }
+)
 
 
 @callback(
@@ -165,7 +180,6 @@ def change_date_picker_type(period):
     )
     dff_previous = df[transports][df.index.isin(date_range_previous)]
     monthly_mean_previous = dff_previous.resample('MS').sum().mean()
-
 
     dataset = pd.DataFrame({
         'weekdays': dff[transports][dff['dayofweek'].isin([0, 1, 2, 3, 4])].mean(),

@@ -18,18 +18,23 @@ import pages.W41.components as components
 # auto-correlation
 
 layout_W41 = html.Div([
-    components.MTA_key_figures_grid,
-    dbc.Card([
-        dbc.CardHeader(components.MTA_aggregate_title_controls,
-                       className='d-flex justify-content-center fs-5 text-body text-nowrap'),
-        dbc.CardBody(components.MTA_aggregate_bar, className='p-0'),
-    ], className='flex-fill w-100', style={'min-width': 300, 'min-height': 500}),
 
-    dbc.Card([
-        dbc.CardHeader('Ridership Prediction',
-                       className='d-flex justify-content-center fs-5 text-body text-nowrap'),
-        dbc.CardBody('⚒ Coming Soon!', className='p-2'),
-    ], className='flex-fill w-100', style={'min-width': 300, 'min-height': 500}),
+    components.MTA_key_figures_grid,
+
+    html.Div([
+        dbc.Card([
+            dbc.CardHeader(components.MTA_aggregate_title_controls,
+                           className='d-flex justify-content-center fs-5 text-body text-nowrap'),
+            dbc.CardBody(components.MTA_aggregate_bar, className='p-0'),
+        ], className='flex-fill', style={'min-width': 700, 'min-height': 500}),
+
+        dbc.Card([
+            dbc.CardHeader('Ridership Prediction for the Next 30 Days',
+                           className='d-flex justify-content-center fs-5 text-body text-nowrap'),
+            dbc.CardBody(components.MTA_pred_line, className='p-2'),
+        ], className='flex-fill', style={'min-width': 700, 'min-height': 500}),
+    ], className='flex-fill w-100 d-flex flex-wrap overflow-auto gap-2'),
+
 ], className='flex-fill d-flex flex-column align-items-center gap-2 p-2 overflow-auto dbc-ag-grid')
 
 if __name__ == '__main__':

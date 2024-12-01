@@ -27,6 +27,8 @@ df.rename(columns={
     'Staten Island Railway: % of Comparable Pre-Pandemic Day': 'Staten Island Railway%'
 }, inplace=True)
 
+df = df.asfreq('D')
+
 transports = [t for t in df.columns if '%' not in t and t != 'Date']
 
 df.replace(0, 1, inplace=True)
