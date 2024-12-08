@@ -1,20 +1,13 @@
-from pprint import pprint
-
 from dash import html, Input, Output, dcc, callback, State, Patch, no_update, ctx
 from dash_bootstrap_templates import ThemeChangerAIO, template_from_url
-from datetime import timedelta, datetime, date
+from datetime import timedelta, datetime
 import dash_mantine_components as dmc
 import plotly.graph_objects as go
 import pandas as pd
-import dash_bootstrap_components as dbc
 from dash_iconify import DashIconify
 
 from .custom_date_picker import custom_date_picker
 from ..config_W41 import df, transports, to_ms, plotly_period
-
-# try to use patches
-# add tootips? transportations maps?
-# add MTA API
 
 # Used in the first select component of the title and for the hover text of the bar fig
 agg1_data_select = {
@@ -125,11 +118,11 @@ MTA_aggregate_bar = html.Div([
                     description=dmc.RadioGroup(
                         dmc.Group([
                             html.Label("Graph type:"),
-                            dmc.Radio(label='Underlay', value='underlay',
+                            dmc.Radio(id='MTA-aggregate-pre-radio1', label='Underlay', value='underlay',
                                       color='var(--bs-primary)', size="xs", styles={'label': {'padding-left': 5}}),
-                            dmc.Radio(label='Difference', value='diff',
+                            dmc.Radio(id='MTA-aggregate-pre-radio2', label='Difference', value='diff',
                                       color='var(--bs-primary)', size="xs", styles={'label': {'padding-left': 5}}),
-                            dmc.Radio(label='Percentage', value='percent',
+                            dmc.Radio(id='MTA-aggregate-pre-radio3', label='Percentage', value='percent',
                                       color='var(--bs-primary)', size="xs", styles={'label': {'padding-left': 5}})
                         ], justify='space-between', gap=0),
                         id="MTA-aggregate-pre-radiogroup",
@@ -147,8 +140,9 @@ MTA_aggregate_bar = html.Div([
                     ], className='d-flex flex-column gap-2')
                 ], className='d-flex gap-2')
             ], className='d-flex align-items-center gap-3 py-2')
-        ], className='border-bottom border-secondary w-100 mx-2', style={'min-width': 1000})
-    ], id='MTA-aggregate-controls-drawer', className='d-flex align-items-end overflow-y-hidden w-100',
+        ], className='w-100', style={'min-width': 1000})
+    ], id='MTA-aggregate-controls-drawer',
+        className='d-flex align-items-center border-bottom border-secondary px-2 overflow-y-hidden w-100',
         style={'transition': 'height 1s', 'height': 350}
     ),
 
@@ -532,6 +526,17 @@ def update_theme_aggregate_bar(
     )
     # Note: False is to hide the loader when the fig is ready
     return patched_chips, fig, False
+
+
+@callback(
+    Output('MTA-aggregate-pre-radio1', "disabled"),
+    Output('MTA-aggregate-pre-radio2', "disabled"),
+    Output('MTA-aggregate-pre-radio3', "disabled"),
+    Input('MTA-aggregate-pre-chk', 'checked'),
+    prevent_initial_call=True,
+)
+def update_disabled_pre_radios(pre_show):
+    return [not pre_show] * 3
 
 
 @callback(

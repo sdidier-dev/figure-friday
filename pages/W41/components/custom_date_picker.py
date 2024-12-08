@@ -1,6 +1,6 @@
-from datetime import timedelta, date, time, datetime
+from datetime import timedelta, datetime
 
-from dash import html, Input, Output, callback, State, no_update, dcc, Patch
+from dash import html, Input, Output, callback, State, no_update, dcc
 import dash_mantine_components as dmc
 from dash_iconify import DashIconify
 from ..config_W41 import df
@@ -110,4 +110,3 @@ def correct_date_range(current_range, store_data, type, min_date, max_date):
 
     return (corrected_range if current_range_datetime != corrected_range else no_update,
             corrected_range if store_data_datetime != corrected_range else no_update)
-

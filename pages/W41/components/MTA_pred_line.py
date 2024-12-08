@@ -1,29 +1,15 @@
-from pprint import pprint
+import pandas as pd
+from datetime import timedelta
 
-import numpy as np
-from dash import html, Input, Output, dcc, callback, State, Patch, no_update, ctx
+from dash import html, Input, Output, dcc, callback, State, Patch, no_update
 from dash_bootstrap_templates import ThemeChangerAIO, template_from_url
-from datetime import timedelta, datetime, date
 import dash_mantine_components as dmc
 import plotly.graph_objects as go
-import pandas as pd
-import dash_bootstrap_components as dbc
-from dash_iconify import DashIconify
-from plotly.subplots import make_subplots
 
-from .custom_date_picker import custom_date_picker
-from ..config_W41 import df, transports, to_ms, plotly_period
+from ..config_W41 import df, transports, to_ms, assets_dir
 
-from sktime.forecasting.compose import TransformedTargetForecaster
-from sktime.transformations.compose import OptionalPassthrough
-from sktime.transformations.series.detrend import Deseasonalizer, Detrender
-from sktime.transformations.series.adapt import TabularToSeriesAdaptor
-from sktime.forecasting.trend import PolynomialTrendForecaster
-from sktime.forecasting.arima import ARIMA
-from sklearn.preprocessing import RobustScaler
-from sklearn.metrics import mean_absolute_percentage_error
-
-# hyperparameters found using optuna optimization using cross validation and 'mean absolute percentage error' as metric
+# hyperparameters fine-tuned with optuna optimization using cross validation
+# and 'mean absolute percentage error' as metric
 forecaster_params = {
     'Subways': {
         'detrender-passthrough': True, 'deseasonalizer-sp': 12, 'deseasonalizer-passthrough': True,
@@ -63,22 +49,44 @@ MTA_pred_line = html.Div([
             value='Subways',
         )], className='d-flex flex-wrap gap-2'
     ),
-    'NOTE: selecting a transportation for the first time can take up to 30s to fit the forecaster and update the graph.',
     html.Div([
         dmc.RadioGroup(
             dmc.Group([
-                dmc.Radio(label='Current Prediction', value='current',
-                          color='var(--bs-primary)', styles={'label': {'padding-left': 5}}),
-                dmc.Radio(label='Backtesting:', value='back',
-                          color='var(--bs-primary)', styles={'label': {'padding-left': 5}}),
+                dmc.Tooltip(
+                    dmc.Radio(label='Current Prediction', value='current',
+                              color='var(--bs-primary)', styles={'label': {'padding-left': 5}}),
+                    multiline=True, withArrow=True, arrowSize=6, w=300, position="top",
+                    label="Uses the full data available to forecast the daily ridership for the next 30 days "
+                          "(of the last data point).",
+                    classNames={
+                        'tooltip': 'bg-body text-body border border-primary',
+                        'arrow': 'bg-body border-bottom border-end border-primary'
+                    },
+                ),
+                dmc.Tooltip(
+                    dmc.Radio(label='Backtesting:', value='back',
+                              color='var(--bs-primary)', styles={'label': {'padding-left': 5}}),
+                    multiline=True, withArrow=True, arrowSize=6, w=500, position="top", bg='var(--bs-body-bg)',
+                    label="Backtesting is used to evaluate the performance of the model. "
+                          "The dataset is split in Train and Test sets. The Train set is used to fit an ARIMA model, "
+                          "then the model is used to make predictions for the 30 following days. Those predictions are "
+                          "compared to the Test set, unknown by the model, using the Mean Absolute Percentage Error "
+                          "(MAPE) metric to assess the model performance. We can evaluate the model using different "
+                          "splits, called Folds. Here we are using 10 Folds with a Step of 7 days",
+                    classNames={
+                        'tooltip': 'bg-body text-body border border-primary',
+                        'arrow': 'bg-body border-bottom border-end border-primary'
+                    },
+                ),
+
             ]),
             id="MTA-pred-radiogroup",
             value="current"
         ),
-        html.Span(' Fold N -', id='MTA-pred-back-span'),
+        html.Span(' Fold #', id='MTA-pred-back-span', className='ms-2'),
         dmc.NumberInput(
             id='MTA-pred-back-input',
-            value=0, min=0, max=9,
+            value=-9, min=-9, max=0,
             size='xs', w=50,
             stepHoldDelay=500, stepHoldInterval=100,
         ),
@@ -96,21 +104,10 @@ MTA_pred_line = html.Div([
             responsive=True,
             config={'displayModeBar': False},
             className='h-100',
-        )
+        ),
     ], className='h-100 m-2', style={'position': 'relative'}),
 
 ], className='h-100 flex-fill d-flex flex-column gap-1')
-
-
-@callback(
-    Output('MTA-pred-back-input', 'value'),
-    Input('MTA-pred-graph', 'clickData'),
-    prevent_initial_call=True,
-)
-def update_fold_selection(click_data):
-    if 'customdata' in click_data['points'][0]:
-        return click_data['points'][0]['customdata']
-    return no_update
 
 
 # makes the loader visible when reloading data
@@ -123,11 +120,6 @@ def update_fold_selection(click_data):
 )
 def reactivate_graph_loader(*_):
     return True
-
-
-# used to save the prediction
-back_test_folds = {}
-actual_pred = {}
 
 
 # Note: can't use a Patch() while modifying the theme, the fig must be fully regenerated
@@ -143,12 +135,12 @@ actual_pred = {}
     Input("color-mode-switch", "checked"),
     State('MTA-pred-chipgroup', 'children'),
 )
-def change_pred_graph(selected_transport, pred_type, fold_n, theme, switch_on, chips):
+def change_pred_graph(selected_transport, pred_type, selected_fold, theme, switch_on, chips):
     fig = go.Figure()
 
     # set the layout first to get the theme colors
     fig.update_layout(
-        legend={'orientation': 'h', 'y': 1.1},
+        legend={'orientation': 'h', 'y': 1},
         margin={'autoexpand': True, "r": 5, "t": 0, "l": 0, "b": 5},
         template=f"{template_from_url(theme)}{'' if switch_on else '_dark'}",
         hovermode='x unified',
@@ -172,69 +164,12 @@ def change_pred_graph(selected_transport, pred_type, fold_n, theme, switch_on, c
 
     y = df[selected_transport]
 
-    pred_window = 30
+    # load pre-computed predictions
+    df_folds_pred = pd.read_csv(f'{assets_dir}/pred/folds_{selected_transport}.csv', index_col='Date', parse_dates=True)
+    df_folds_MAPE = pd.read_csv(f'{assets_dir}/pred/folds_MAPE.csv', index_col='Folds')
+    df_actual_pred = pd.read_csv(f'{assets_dir}/pred/actual_pred.csv', index_col='Date', parse_dates=True)
 
-    pipe = TransformedTargetForecaster(
-        steps=[
-            (
-                "detrender", OptionalPassthrough(
-                    transformer=Detrender(PolynomialTrendForecaster(degree=1)),
-                    passthrough=forecaster_params[selected_transport]["detrender-passthrough"]
-                )
-            ),
-            (
-                "deseasonalizer", OptionalPassthrough(
-                    transformer=Deseasonalizer(forecaster_params[selected_transport]["deseasonalizer-sp"]),
-                    passthrough=forecaster_params[selected_transport]["deseasonalizer-passthrough"]
-                )
-            ),
-            (
-                "scaler", OptionalPassthrough(
-                    transformer=TabularToSeriesAdaptor(RobustScaler()),
-                    passthrough=forecaster_params[selected_transport]["scaler-passthrough"]
-                )
-            ),
-            ("forecaster", ARIMA(
-                suppress_warnings=True,
-                order=(
-                    forecaster_params[selected_transport]["p"],
-                    forecaster_params[selected_transport]["d"],
-                    forecaster_params[selected_transport]["q"],
-                )
-            )),
-        ]
-    )
-
-    # fit forecaster and make pred if not already done for selected_transport
-    if selected_transport not in back_test_folds:
-        # backtesting
-        fold_length = 7
-        fold_number = 3
-        y_pred_folds, MAPE_folds = [], []
-        for i in list(range(fold_number - 1, -1, -1)):
-            if i + 1 == fold_number:
-                y_train = y[: - i * fold_length - pred_window]
-                pipe.fit(y_train)
-            else:
-                new_y_train = y[- (i + 1) * fold_length - pred_window: - i * fold_length - pred_window]
-                pipe.update(new_y_train)
-
-            y_pred_fold = pipe.predict(fh=np.arange(1, pred_window + 1))
-            y_test_fold = y[- i * fold_length - pred_window:- i * fold_length] if i != 0 else y[- pred_window:]
-            MAPE_fold = mean_absolute_percentage_error(y_pred_fold, y_test_fold)
-            # save the pred and MAPE score
-            y_pred_folds.append(y_pred_fold)
-            MAPE_folds.append(MAPE_fold)
-            print(MAPE_folds)
-
-        back_test_folds[selected_transport] = {'y_pred': y_pred_folds, 'MAPE': MAPE_folds}
-
-        # actual prediction
-        new_y_train = y[- pred_window:]
-        pipe.update(new_y_train)
-        y_pred = pipe.predict(fh=np.arange(1, pred_window + 1))
-        actual_pred[selected_transport] = y_pred
-
+    # make fig
     if pred_type == 'current':
         # Current Ridership
         fig.add_scatter(
@@ -246,49 +181,52 @@ def change_pred_graph(selected_transport, pred_type, fold_n, theme, switch_on, c
         # Ridership prediction
         fig.add_scatter(
             name='Next 30 Days Predictions',
-            x=actual_pred[selected_transport].index, y=actual_pred[selected_transport],
+            x=df_actual_pred.index, y=df_actual_pred[selected_transport],
             line={'color': transport_colors[selected_transport], 'dash': "dash"},
             hovertemplate="%{y:.4s}"
         )
     else:
         # bar plot for MAPE Score
+        fold_number = len(df_folds_pred.columns)
         MAPE_x = []
-        fold_number = len(back_test_folds[selected_transport]['y_pred'])
-        for fold in range(fold_number):
-            folds_end_dates = back_test_folds[selected_transport]['y_pred'][fold].index[-1]
+
+        for fold in range(-fold_number+1, 1):
+            folds_end_dates = df_folds_pred[f"fold_{-fold}"].dropna().index[-1]
+            # MAPE_x.append(folds_end_dates)
             MAPE_x.append(folds_end_dates - timedelta(days=7))
 
         fig.add_bar(
             name="MAPE Score",
             x=MAPE_x,
-            y=back_test_folds[selected_transport]['MAPE'],
+            y=df_folds_MAPE[selected_transport],
             marker=dict(
                 color=transport_colors[selected_transport],
-                opacity=[1 if fold == fold_n else 0.5 for fold in range(fold_number - 1, -1, -1)]
+                opacity=[1 if fold == selected_fold else 0.5 for fold in range(-fold_number+1, 1)]
             ),
+
             xperiod=to_ms['W-SAT'],
             xperiodalignment="middle",
             showlegend=False,
-            textposition="outside",
             texttemplate="%{y:.3f}",
-            customdata=list(range(fold_number - 1, -1, -1)),  # used to select the corresponding fold on bar click
+            textfont_color=fig['layout']['template']['layout']['font']['color'],
+            customdata=list(range(-fold_number+1, 1)),  # used to select the corresponding fold on bar click
             hoverinfo="none",
         )
 
         # Folds line plots
-        y_pred_fold = back_test_folds[selected_transport]['y_pred'][- fold_n - 1]
-        y_split_index_position = y.index.get_indexer([y_pred_fold.index[0]])[0]
+        y_fold_pred = df_folds_pred[f"fold_{-selected_fold}"].dropna()
+        y_split_index_position = y.index.get_indexer([y_fold_pred.index[0]])[0]
 
         fig.add_scatter(
             name='Train (from 2020-03-01)',
-            x=y[-100:y_split_index_position].index, y=y[-100:y_split_index_position],
+            x=y[-150:y_split_index_position].index, y=y[-150:y_split_index_position],
             line_color=transport_colors[selected_transport],
             yaxis="y2",
             hovertemplate="%{y:.4s}"
         )
         fig.add_scatter(
             name='Test',
-            x=y_pred_fold.index, y=y[y_split_index_position:],
+            x=y_fold_pred.index, y=y[y_split_index_position:],
             opacity=0.5,
             line_color=transport_colors[selected_transport],
             yaxis="y2",
@@ -296,14 +234,14 @@ def change_pred_graph(selected_transport, pred_type, fold_n, theme, switch_on, c
         )
         fig.add_scatter(
             name='Prediction',
-            x=y_pred_fold.index, y=y_pred_fold,
+            x=y_fold_pred.index, y=y_fold_pred,
             line={'color': transport_colors[selected_transport], 'dash': "dash"},
             yaxis="y2",
             hovertemplate="%{y:.4s}"
         )
 
         fig.update_layout(
-            yaxis={'title_text': "MAPE", 'domain': [0, 0.3], 'range': [0, 0.3], 'dtick': 0.1},
+            yaxis={'title_text': "MAPE", 'domain': [0, 0.3], 'dtick': 0.1},
             yaxis2={'title_text': "Ridership", 'domain': [0.45, 1]},
         )
 
@@ -316,6 +254,7 @@ def change_pred_graph(selected_transport, pred_type, fold_n, theme, switch_on, c
             xref="paper", xanchor="center", x=0.5,
             yref="y domain", yanchor="bottom", y=1,
         )
+
         # add vline and annotation for last date of the data
         # Note: the annotation param of vline doesn't work with dates for x
         # also note, the x type hint doesn't accept string, but safe to ignore
@@ -347,3 +286,14 @@ def change_pred_graph(selected_transport, pred_type, fold_n, theme, switch_on, c
 def update_disable_back_input(pred_type):
     return ({'font-size': 14, 'color': 'var(--mantine-color-dimmed)' if pred_type == 'current' else ''},
             pred_type == 'current')
+
+
+@callback(
+    Output('MTA-pred-back-input', 'value'),
+    Input('MTA-pred-graph', 'clickData'),
+    prevent_initial_call=True,
+)
+def update_fold_selection(click_data):
+    if 'customdata' in click_data['points'][0]:
+        return click_data['points'][0]['customdata']
+    return no_update

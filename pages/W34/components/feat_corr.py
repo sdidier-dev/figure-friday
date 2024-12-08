@@ -83,10 +83,10 @@ def update_heatmap_corr(show_upper_half, theme, switch_on):
     corr_matrix = df[num_features].corr()
 
     if show_upper_half:
-        mask = np.ones_like(corr_matrix, dtype=np.bool)
+        mask = np.ones_like(corr_matrix, dtype=bool)
         np.fill_diagonal(mask, None)
     else:
-        mask = np.tril(np.ones_like(corr_matrix, dtype=np.bool), k=-1)
+        mask = np.tril(np.ones_like(corr_matrix, dtype=bool), k=-1)
 
     z = corr_matrix.where(mask).fillna('')
 
