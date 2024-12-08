@@ -8,3 +8,4 @@ dash-mantine-components>=0.15.1
 dash-iconify
 python-dotenv
 networkx
+prefixed
