@@ -9,3 +9,4 @@ dash-iconify
 python-dotenv
 networkx
 prefixed
+statsmodels

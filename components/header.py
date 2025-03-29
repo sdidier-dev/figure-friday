@@ -1,4 +1,4 @@
-from dash import html, Input, Output, callback, page_registry, clientside_callback
+from dash import html, Input, Output, callback, page_registry, clientside_callback, no_update
 from dash_bootstrap_templates import ThemeChangerAIO
 import dash_bootstrap_components as dbc
 import dash_mantine_components as dmc
@@ -48,7 +48,8 @@ def main_app_header(url_base_pathname):
     prevent_initial_call=True
 )
 def set_title(url):
-    return page_titles[f"/{url.split('/')[-1]}"]
+    page_path = f"/{'/'.join(url.split('/')[-2:])}"
+    return page_titles[page_path if page_path in page_titles else "/"]
 
 
 # Switch color-theme for DBC and DMC components
